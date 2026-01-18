@@ -6,6 +6,9 @@
 - [link to jam page on itch.io](https://itch.io/jam/pirate)
 - [game design doc](https://docs.google.com/document/d/1oj2usDqIn5Sdpnh7ON6QuayOTrwhRDDoshr0Rp_YQFg/edit?tab=t.0)
 
+used assets
+- [Cute Fantasy RPG asset pack by Kenmi](https://kenmi-art.itch.io/cute-fantasy-rpg)
+
 
 ## theme: The World is Watching
 

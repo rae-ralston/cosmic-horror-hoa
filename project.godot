@@ -11,5 +11,14 @@ config_version=5
 [application]
 
 config/name="game jam  cosmic horro HOA"
+run/main_scene="uid://bsneu6mo1x44l"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[gui]
+
+theme/custom="yellow"
+
+[rendering]
+
+environment/defaults/default_clear_color=Color(0.89411765, 0.6509804, 0.44705883, 1)
