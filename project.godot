@@ -11,13 +11,9 @@ config_version=5
 [application]
 
 config/name="game jam  cosmic horro HOA"
-run/main_scene="uid://bsneu6mo1x44l"
+run/main_scene="uid://bllxxkaqogxh6"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
-
-[gui]
-
-theme/custom="yellow"
 
 [rendering]
 
