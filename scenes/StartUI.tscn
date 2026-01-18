@@ -1,0 +1,85 @@
+[gd_scene load_steps=5 format=3 uid="uid://bllxxkaqogxh6"]
+
+[ext_resource type="Script" uid="uid://c02sx4mfrncw4" path="res://scripts/start_ui.gd" id="1_31gsc"]
+[ext_resource type="Texture2D" uid="uid://da1qf7k0406i4" path="res://assets/sprites/the-suburbs.png" id="1_jef12"]
+[ext_resource type="FontFile" uid="uid://lqkdp0ocibaw" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_yubl7"]
+[ext_resource type="FontFile" uid="uid://d2kd3gmrg66o1" path="res://assets/fonts/PixelOperator8.ttf" id="3_31gsc"]
+
+[node name="StartUi" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_31gsc")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -144.0
+offset_top = -216.0
+offset_right = 144.0
+offset_bottom = 216.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_jef12")
+
+[node name="title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -555.5
+offset_top = 18.0
+offset_right = 555.5
+offset_bottom = 89.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_yubl7")
+theme_override_font_sizes/font_size = 70
+text = "Cosmic Horror HOA"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("3_31gsc")
+theme_override_font_sizes/font_size = 40
+text = "Start "
+
+[node name="SettingsButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("3_31gsc")
+theme_override_font_sizes/font_size = 40
+text = "Settings
+"
+
+[node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("3_31gsc")
+theme_override_font_sizes/font_size = 40
+text = "Quit "
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
