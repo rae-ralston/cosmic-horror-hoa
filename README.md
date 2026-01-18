@@ -6,7 +6,7 @@
 - [link to jam page on itch.io](https://itch.io/jam/pirate)
 - [game design doc](https://docs.google.com/document/d/1oj2usDqIn5Sdpnh7ON6QuayOTrwhRDDoshr0Rp_YQFg/edit?tab=t.0)
 
-used assets
+used assets (with commercial/free use licenses)
 - [Cute Fantasy RPG asset pack by Kenmi](https://kenmi-art.itch.io/cute-fantasy-rpg)
 
 
