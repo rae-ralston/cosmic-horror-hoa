@@ -25,6 +25,30 @@ This is a Godot project - open `project.godot` in the Godot 4.5 editor and press
 - **Assets**: `assets/` - Sprites, music, sound, fonts
 - **Data**: `data/*.json` - Game data (citations, etc.)
 
+## MCP Servers
+
+### Godot MCP Server
+
+**Configuration**: Project-scoped (`.mcp.json`)
+**Purpose**: Access Godot 4.5 engine API documentation, node references, method signatures, and GDScript best practices
+
+**When to use the Godot MCP**:
+- Looking up node types, methods, properties, or signals (e.g., "What methods are available on CharacterBody2D?")
+- Understanding GDScript syntax or built-in functions (e.g., "How do I use @export variables?")
+- Checking signal signatures or connection patterns (e.g., "What parameters does animation_finished pass?")
+- Learning about Godot built-in classes (e.g., "How does Vector2 work in Godot?")
+- Verifying engine patterns or best practices (e.g., "What's the proper way to handle _process vs _physics_process?")
+
+**Important**: Always prefer querying the Godot MCP server over relying on memory when implementing GDScript features or working with Godot nodes. The MCP provides current, accurate Godot 4.5 documentation.
+
+**Usage Examples**:
+```
+"Look up CharacterBody2D methods in the Godot MCP"
+"Check the Godot MCP for Signal.emit() documentation"
+"Find @export variable examples in the Godot MCP"
+"What does AnimatedSprite2D.play() return according to Godot docs?"
+```
+
 ## Architecture
 
 ### Autoload Singleton Pattern
@@ -171,6 +195,7 @@ Player actions follow this pattern:
 - **Node references**: Use `@onready` for node references that exist at scene load
 - **Type hints**: GDScript supports optional type hints (`: Type`)
 - **Signals**: Prefer signals over direct calls for decoupled communication
+- **API Documentation**: Always query the Godot MCP server for node methods, built-in classes, and GDScript features rather than relying on memory
 
 ### Game Jam Context
 
