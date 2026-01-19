@@ -1,6 +1,7 @@
 extends Control
 
 @onready var rows_container: VBoxContainer = $MarginContainer/Panel/MarginContainer/Rows
+const CITATION_ROW_SCENE: PackedScene = preload("res://scenes/citation_row.tscn")
 
 func _ready() -> void:
 	CitationsManager.citations_changed.connect(_on_citations_changed)
@@ -16,7 +17,6 @@ func _refresh() -> void:
 	
 	var rows = CitationsManager.get_active_list_for_ui()
 	print("UI refresh Rows: ", rows.size())
-	# TODO: clear + rebuild rows_container from rows
 
 	if rows.is_empty():
 		var empty := Label.new()
@@ -24,11 +24,7 @@ func _refresh() -> void:
 		rows_container.add_child(empty)
 		return
 
-	for row in rows:
-		var line := Label.new()
-		line.text = ("[x] " if row["is_resolved"] else "[ ] ") + str(row["title"])
-		rows_container.add_child(line)
-		
-
-func _process(delta: float) -> void:
-	pass
+	for row_data in rows:
+		var row_node = CITATION_ROW_SCENE.instantiate()
+		rows_container.add_child(row_node)
+		row_node.set_data(row_data)

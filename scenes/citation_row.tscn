@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://bq8x7m2oap4k1"]
+
+[ext_resource type="Script" uid="uid://clnctuxn64jq5" path="res://scripts/citation_row.gd" id="1_citation_row"]
+[ext_resource type="FontFile" uid="uid://d2kd3gmrg66o1" path="res://assets/fonts/PixelOperator8.ttf" id="2_font"]
+
+[node name="CitationRow" type="HBoxContainer"]
+script = ExtResource("1_citation_row")
+
+[node name="LeftColumn" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Check" type="Label" parent="LeftColumn"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+text = "[ ]"
+
+[node name="RightColumn" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="RightColumn"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+text = "Title"
+
+[node name="Tag" type="Label" parent="RightColumn"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
