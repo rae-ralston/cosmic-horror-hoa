@@ -25,6 +25,30 @@ This is a Godot project - open `project.godot` in the Godot 4.5 editor and press
 - **Assets**: `assets/` - Sprites, music, sound, fonts
 - **Data**: `data/*.json` - Game data (citations, etc.)
 
+### Testing Phase System
+
+To speed up phase testing during development, PhaseManager supports a test mode with shortened durations:
+
+**Enabling Test Mode:**
+1. Open Godot editor
+2. In the FileSystem panel, navigate to `scripts/phase_manager.gd`
+3. With PhaseManager autoload visible in Scene tree (or create a test scene that shows it)
+4. In the Inspector panel, find the "Test Mode" checkbox and enable it
+5. Press F5 to run the game
+
+**Test Mode Durations:**
+- Normal: 10 seconds (instead of 90)
+- Warning: 5 seconds (instead of 15)
+- Danger: 5 seconds (instead of 25)
+
+**Timer Display:**
+The game includes a timer display in the top-right corner that:
+- Shows time remaining in the current phase (MM:SS or SS format)
+- Changes color by phase: white (Normal) → orange (Warning) → red (Danger)
+- Updates every frame for smooth countdown
+
+**Note:** Test mode is an `@export` variable, so you can toggle it in the Inspector without modifying code. Remember to disable test mode before building final releases.
+
 ## MCP Servers
 
 ### Godot MCP Server
