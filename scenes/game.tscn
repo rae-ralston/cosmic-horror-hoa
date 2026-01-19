@@ -103,6 +103,6 @@ position = Vector2(106.38816, 97.753845)
 position = Vector2(0, 0)
 
 [node name="Camera2D" type="Camera2D" parent="GameView/GameViewport/World/player"]
-zoom = Vector2(4, 4)
+zoom = Vector2(1, 1)
 
 [connection signal="citations_changed" from="CitationsManager" to="." method="_on_citations_manager_citations_changed"]

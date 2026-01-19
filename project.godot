@@ -19,10 +19,6 @@ config/icon="res://icon.svg"
 
 CitationsManager="*res://scripts/citations_manager.gd"
 
-[gui]
-
-theme/custom="yellow"
-
 [input]
 
 crawl={
