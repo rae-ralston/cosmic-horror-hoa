@@ -14,11 +14,24 @@ signal normal_resumed()
 @export var warning_duration: float = 15.0
 @export var danger_duration: float = 25.0
 
+# Test mode - use shorter durations for rapid testing
+@export var test_mode: bool = false
+@export var test_normal_duration: float = 10.0
+@export var test_warning_duration: float = 5.0
+@export var test_danger_duration: float = 5.0
+
 # State
 var current_phase: Phase = Phase.NORMAL
 var phase_timer: Timer = null
 
 func _ready() -> void:
+	# Use test durations if test mode is enabled
+	if test_mode:
+		normal_duration = test_normal_duration
+		warning_duration = test_warning_duration
+		danger_duration = test_danger_duration
+		print("PhaseManager: Test mode enabled - using shortened durations (Normal: %ds, Warning: %ds, Danger: %ds)" % [normal_duration, warning_duration, danger_duration])
+
 	_setup_timer()
 	_start_phase(Phase.NORMAL)
 	print("PhaseManager initialized - starting Normal phase")
