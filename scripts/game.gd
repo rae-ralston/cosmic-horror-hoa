@@ -1,6 +1,6 @@
 extends Control
 @onready var CitationsManager: Node = $CitationsManager
-@onready var danger_overlay: ColorRect = $DangerOverlay
+@onready var danger_overlay: ColorRect = $DangerOverlayLayer/DangerOverlay
 
 # Tween for smooth overlay transitions
 var overlay_tween: Tween = null
@@ -40,7 +40,14 @@ func _on_normal_resumed() -> void:
 
 func _fade_overlay_in() -> void:
 	if not danger_overlay:
+		print("ERROR: danger_overlay is null!")
 		return
+
+	print("Fade in - overlay exists: ", danger_overlay != null)
+	print("Fade in - overlay visible: ", danger_overlay.visible)
+	print("Fade in - overlay size: ", danger_overlay.size)
+	print("Fade in - overlay position: ", danger_overlay.position)
+	print("Fade in - overlay modulate before: ", danger_overlay.modulate)
 
 	# Kill existing tween if any
 	if overlay_tween:
@@ -53,6 +60,7 @@ func _fade_overlay_in() -> void:
 
 	# Fade overlay to 35% opacity (red tint)
 	overlay_tween.tween_property(danger_overlay, "modulate:a", 0.35, 0.5)
+	print("Fade in - tween created, target alpha: 0.35")
 
 func _fade_overlay_out() -> void:
 	if not danger_overlay:

@@ -36,8 +36,11 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_uwrxv")
 
-[node name="DangerOverlay" type="ColorRect" parent="."]
-layout_mode = 1
+[node name="DangerOverlayLayer" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="DangerOverlay" type="ColorRect" parent="DangerOverlayLayer"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -45,8 +48,6 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 0, 0, 1)
 modulate = Color(1, 1, 1, 0)
-z_index = 100
-z_as_relative = true
 
 [node name="CitationsManager" type="Node" parent="."]
 script = ExtResource("3_lnu2h")
