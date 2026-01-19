@@ -1,13 +1,104 @@
-[gd_scene load_steps=3 format=3 uid="uid://bsneu6mo1x44l"]
+[gd_scene load_steps=8 format=3 uid="uid://bsneu6mo1x44l"]
 
 [ext_resource type="Script" uid="uid://bhyrnlv1g4ay5" path="res://scripts/game.gd" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://dfxx88ir3r5eg" path="res://scenes/environment.tscn" id="2_yqjtg"]
+[ext_resource type="Script" uid="uid://cil60usxpugy6" path="res://scripts/citations_manager.gd" id="3_lnu2h"]
+[ext_resource type="Script" uid="uid://clnctuxn64jq5" path="res://scripts/citation_row.gd" id="4_iywne"]
+[ext_resource type="Script" uid="uid://c8uqcx2xh0341" path="res://scripts/citations_list_ui.gd" id="4_lbhrr"]
 
-[node name="game" type="Node2D"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p57ef"]
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="GDScript" id="GDScript_lbhrr"]
+script/source = "extends VBoxContainer
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[node name="game" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_uwrxv")
 
-[node name="environment" parent="." instance=ExtResource("2_yqjtg")]
+[node name="CitationsManager" type="Node" parent="."]
+script = ExtResource("3_lnu2h")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="CitationsManager"]
+
+[node name="CitationListUI" type="Control" parent="CitationsManager/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_lbhrr")
+
+[node name="MarginContainer" type="MarginContainer" parent="CitationsManager/CanvasLayer/CitationListUI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -390.0
+offset_bottom = 230.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="Panel" type="Panel" parent="CitationsManager/CanvasLayer/CitationListUI/MarginContainer"]
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p57ef")
+
+[node name="MarginContainer" type="MarginContainer" parent="CitationsManager/CanvasLayer/CitationListUI/MarginContainer/Panel"]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 200.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Rows" type="VBoxContainer" parent="CitationsManager/CanvasLayer/CitationListUI/MarginContainer/Panel/MarginContainer"]
+layout_mode = 2
+script = SubResource("GDScript_lbhrr")
+
+[node name="GameView" type="SubViewportContainer" parent="."]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 1.0
+offset_right = 1151.0
+offset_bottom = 651.0
+stretch = true
+
+[node name="GameViewport" type="SubViewport" parent="GameView"]
+handle_input_locally = false
+size = Vector2i(1149, 650)
+size_2d_override = Vector2i(320, 180)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="World" type="Node2D" parent="GameView/GameViewport"]
+
+[node name="Camera2D" type="Camera2D" parent="GameView/GameViewport/World"]
 position = Vector2(-1, 0)
-zoom = Vector2(4, 4)
+
+[node name="environment" parent="GameView/GameViewport/World" instance=ExtResource("2_yqjtg")]
+position = Vector2(106.38816, 97.753845)
+
+[connection signal="citations_changed" from="CitationsManager" to="." method="_on_citations_manager_citations_changed"]

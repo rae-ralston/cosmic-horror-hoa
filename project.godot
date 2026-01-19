@@ -15,6 +15,10 @@ run/main_scene="uid://bllxxkaqogxh6"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+CitationsManager="*res://scripts/citations_manager.gd"
+
 [rendering]
 
 environment/defaults/default_clear_color=Color(0.89411765, 0.6509804, 0.44705883, 1)
