@@ -1,16 +1,70 @@
 extends Control
-#@onready var sprite : Sprite2D = $Player_sprite
 @onready var CitationsManager: Node = $CitationsManager
+@onready var danger_overlay: ColorRect = $DangerOverlayLayer/DangerOverlay
 
-# Called when the node enters the scene tree for the first time.
+# Tween for smooth overlay transitions
+var overlay_tween: Tween = null
+
+# Overlay configuration constants
+const DANGER_OVERLAY_ALPHA = 0.35
+const FADE_DURATION = 0.5
+
 func _ready() -> void:
 	CitationsManager.start_day()
 
+	# Connect to PhaseManager signals
+	PhaseManager.phase_changed.connect(_on_phase_changed)
+	PhaseManager.danger_started.connect(_on_danger_started)
+	PhaseManager.normal_resumed.connect(_on_normal_resumed)
+	PhaseManager.warning_started.connect(_on_warning_started)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+	# Initialize overlay as transparent
+	if danger_overlay:
+		danger_overlay.modulate.a = 0.0
+
+func _on_phase_changed(_new_phase: int) -> void:
 	pass
 
-
 func _on_citations_manager_citations_changed() -> void:
-	pass # Replace with function body.
+	pass
+
+func _on_warning_started() -> void:
+	pass
+
+func _on_danger_started() -> void:
+	_fade_overlay_in()
+
+func _on_normal_resumed() -> void:
+	_fade_overlay_out()
+
+func _fade_overlay_in() -> void:
+	if not danger_overlay:
+		return
+
+	# Kill existing tween if any
+	if overlay_tween:
+		overlay_tween.kill()
+
+	# Create new tween
+	overlay_tween = create_tween()
+	overlay_tween.set_ease(Tween.EASE_IN_OUT)
+	overlay_tween.set_trans(Tween.TRANS_CUBIC)
+
+	# Fade overlay to danger opacity (red tint)
+	overlay_tween.tween_property(danger_overlay, "modulate:a", DANGER_OVERLAY_ALPHA, FADE_DURATION)
+
+func _fade_overlay_out() -> void:
+	if not danger_overlay:
+		return
+
+	# Kill existing tween if any
+	if overlay_tween:
+		overlay_tween.kill()
+
+	# Create new tween
+	overlay_tween = create_tween()
+	overlay_tween.set_ease(Tween.EASE_IN_OUT)
+	overlay_tween.set_trans(Tween.TRANS_CUBIC)
+
+	# Fade overlay to fully transparent
+	overlay_tween.tween_property(danger_overlay, "modulate:a", 0.0, FADE_DURATION)

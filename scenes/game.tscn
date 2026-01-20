@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://bhyrnlv1g4ay5" path="res://scripts/game.gd" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://dfxx88ir3r5eg" path="res://scenes/environment.tscn" id="2_yqjtg"]
 [ext_resource type="Script" uid="uid://cil60usxpugy6" path="res://scripts/citations_manager.gd" id="3_lnu2h"]
-[ext_resource type="Script" uid="uid://clnctuxn64jq5" path="res://scripts/citation_row.gd" id="4_iywne"]
 [ext_resource type="Script" uid="uid://c8uqcx2xh0341" path="res://scripts/citations_list_ui.gd" id="5_lbhrr"]
-[ext_resource type="PackedScene" uid="uid://player_scene" path="res://scenes/player.tscn" id="6_player"]
+[ext_resource type="PackedScene" uid="uid://j28d6tuyrgp6" path="res://scenes/timer_display.tscn" id="6_p57ef"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="6_player"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p57ef"]
 border_width_left = 1
@@ -27,7 +27,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 "
 
@@ -35,6 +35,19 @@ func _process(delta: float) -> void:
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_uwrxv")
+
+[node name="DangerOverlayLayer" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="DangerOverlay" type="ColorRect" parent="DangerOverlayLayer"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 1)
 
 [node name="CitationsManager" type="Node" parent="."]
 script = ExtResource("3_lnu2h")
@@ -79,6 +92,13 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 script = SubResource("GDScript_lbhrr")
 
+[node name="TimerDisplay" parent="CitationsManager/CanvasLayer" instance=ExtResource("6_p57ef")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_bottom = 0.0
+grow_horizontal = 0
+grow_vertical = 1
+
 [node name="GameView" type="SubViewportContainer" parent="."]
 layout_mode = 0
 offset_left = 2.0
@@ -100,9 +120,7 @@ render_target_update_mode = 4
 position = Vector2(106.38816, 97.753845)
 
 [node name="player" parent="GameView/GameViewport/World" instance=ExtResource("6_player")]
-position = Vector2(0, 0)
 
 [node name="Camera2D" type="Camera2D" parent="GameView/GameViewport/World/player"]
-zoom = Vector2(1, 1)
 
 [connection signal="citations_changed" from="CitationsManager" to="." method="_on_citations_manager_citations_changed"]
