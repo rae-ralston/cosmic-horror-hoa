@@ -23,7 +23,7 @@ func _process(_delta):
 
 func _update_display():
 	# Format time as MM:SS or SS
-	var minutes = int(time_remaining) / 60
+	var minutes = int(time_remaining / 60.0)
 	var seconds = int(time_remaining) % 60
 
 	if minutes > 0:

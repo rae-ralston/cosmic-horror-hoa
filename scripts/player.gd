@@ -343,7 +343,7 @@ func _update_animation() -> void:
 	if animated_sprite.animation != anim_name:
 		animated_sprite.play(anim_name)
 
-func _on_item_picked_up(item: Area2D, item_texture: Texture2D, item_name: String) -> void:
+func _on_item_picked_up(_item: Area2D, item_texture: Texture2D, item_name: String) -> void:
 	# If already holding something, add it to inventory first
 	if held_item_name != "":
 		inventory.append(held_item_name)

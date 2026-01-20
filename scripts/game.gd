@@ -22,7 +22,10 @@ func _ready() -> void:
 	if danger_overlay:
 		danger_overlay.modulate.a = 0.0
 
-func _on_phase_changed(new_phase: int) -> void:
+func _on_phase_changed(_new_phase: int) -> void:
+	pass
+
+func _on_citations_manager_citations_changed() -> void:
 	pass
 
 func _on_warning_started() -> void:

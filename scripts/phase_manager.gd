@@ -15,7 +15,7 @@ signal normal_resumed()
 @export var danger_duration: float = 25.0
 
 # Test mode - use shorter durations for rapid testing
-@export var test_mode: bool = false
+@export var test_mode: bool = true
 @export var test_normal_duration: float = 10.0
 @export var test_warning_duration: float = 5.0
 @export var test_danger_duration: float = 5.0
