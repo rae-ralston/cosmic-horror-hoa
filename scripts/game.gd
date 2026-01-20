@@ -5,6 +5,10 @@ extends Control
 # Tween for smooth overlay transitions
 var overlay_tween: Tween = null
 
+# Overlay configuration constants
+const DANGER_OVERLAY_ALPHA = 0.35
+const FADE_DURATION = 0.5
+
 func _ready() -> void:
 	CitationsManager.start_day()
 
@@ -18,36 +22,21 @@ func _ready() -> void:
 	if danger_overlay:
 		danger_overlay.modulate.a = 0.0
 
-func _process(delta: float) -> void:
-	pass
-
-func _on_citations_manager_citations_changed() -> void:
-	pass
-
 func _on_phase_changed(new_phase: int) -> void:
-	print("Phase changed to: %d" % new_phase)
+	pass
 
 func _on_warning_started() -> void:
-	print("Warning phase started - Eye approaching!")
+	pass
 
 func _on_danger_started() -> void:
-	print("Danger phase started - Eye is watching!")
 	_fade_overlay_in()
 
 func _on_normal_resumed() -> void:
-	print("Normal phase resumed - Eye has left")
 	_fade_overlay_out()
 
 func _fade_overlay_in() -> void:
 	if not danger_overlay:
-		print("ERROR: danger_overlay is null!")
 		return
-
-	print("Fade in - overlay exists: ", danger_overlay != null)
-	print("Fade in - overlay visible: ", danger_overlay.visible)
-	print("Fade in - overlay size: ", danger_overlay.size)
-	print("Fade in - overlay position: ", danger_overlay.position)
-	print("Fade in - overlay modulate before: ", danger_overlay.modulate)
 
 	# Kill existing tween if any
 	if overlay_tween:
@@ -58,9 +47,8 @@ func _fade_overlay_in() -> void:
 	overlay_tween.set_ease(Tween.EASE_IN_OUT)
 	overlay_tween.set_trans(Tween.TRANS_CUBIC)
 
-	# Fade overlay to 35% opacity (red tint)
-	overlay_tween.tween_property(danger_overlay, "modulate:a", 0.35, 0.5)
-	print("Fade in - tween created, target alpha: 0.35")
+	# Fade overlay to danger opacity (red tint)
+	overlay_tween.tween_property(danger_overlay, "modulate:a", DANGER_OVERLAY_ALPHA, FADE_DURATION)
 
 func _fade_overlay_out() -> void:
 	if not danger_overlay:
@@ -76,4 +64,4 @@ func _fade_overlay_out() -> void:
 	overlay_tween.set_trans(Tween.TRANS_CUBIC)
 
 	# Fade overlay to fully transparent
-	overlay_tween.tween_property(danger_overlay, "modulate:a", 0.0, 0.5)
+	overlay_tween.tween_property(danger_overlay, "modulate:a", 0.0, FADE_DURATION)

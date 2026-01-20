@@ -30,11 +30,9 @@ func _ready() -> void:
 		normal_duration = test_normal_duration
 		warning_duration = test_warning_duration
 		danger_duration = test_danger_duration
-		print("PhaseManager: Test mode enabled - using shortened durations (Normal: %ds, Warning: %ds, Danger: %ds)" % [normal_duration, warning_duration, danger_duration])
 
 	_setup_timer()
 	_start_phase(Phase.NORMAL)
-	print("PhaseManager initialized - starting Normal phase")
 
 func _setup_timer() -> void:
 	phase_timer = Timer.new()
@@ -50,15 +48,12 @@ func _start_phase(phase: Phase) -> void:
 	match phase:
 		Phase.NORMAL:
 			duration = normal_duration
-			print("Starting Normal phase (%d seconds)" % duration)
 			normal_resumed.emit()
 		Phase.WARNING:
 			duration = warning_duration
-			print("Starting Warning phase (%d seconds)" % duration)
 			warning_started.emit()
 		Phase.DANGER:
 			duration = danger_duration
-			print("Starting Danger phase (%d seconds)" % duration)
 			danger_started.emit()
 
 	phase_changed.emit(phase)
