@@ -20,13 +20,19 @@ var is_watering: bool = false
 var is_digging: bool = false
 
 # Inventory system
-var inventory: Array[String] = []
-var held_item: Texture2D = null  # Currently held/carried item texture
-var held_item_name: String = ""
+@onready var inventory: PlayerInventory = $Inventory
+@onready var world: Node2D = get_parent() # World node is the player's parent
+@onready var interact_area: Area2D = $InteractArea
+var nearby_items: Array[Item] = []
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
+
 func _ready() -> void:
+	#player interact area for picking up items
+	interact_area.area_entered.connect(_on_interact_area_entered)
+	interact_area.area_exited.connect(_on_interact_area_exited)
+	
 	# Setup animations from sprite sheet
 	_setup_animations()
 	
@@ -34,14 +40,25 @@ func _ready() -> void:
 	var held_item_node = get_node_or_null("held_item")
 	if held_item_node:
 		held_item_node.visible = false
-	# Connect to pickup items in the scene
-	_connect_to_pickup_items()
 	
 	# Start with idle animation
 	animated_sprite.play("idle_down")
 	
 	# Connect animation finished signal for actions like plow
 	animated_sprite.animation_finished.connect(_on_animation_finished)
+
+func _on_interact_area_entered(area: Area2D) -> void:
+	print("ENTER:", area.name, " type=", area.get_class())
+	if area is Item:
+		var item := area as Item
+		nearby_items.append(item)
+		print("nearby +", item.item_id, " node=", item.name)
+
+func _on_interact_area_exited(area: Area2D) -> void:
+	print("EXIT:", area.name)
+	if area is Item:
+		var item:= area as Item
+		nearby_items.erase(item)
 
 func _setup_animations() -> void:
 	var sprite_sheet = preload("res://assets/sprites/main_character.png")
@@ -219,15 +236,47 @@ func _setup_animations() -> void:
 	
 	animated_sprite.sprite_frames = sprite_frames
 
-func _connect_to_pickup_items() -> void:
-	# Wait a frame for all nodes to be ready
-	await get_tree().process_frame
-	# Find all pickup items in the scene and connect to their signals
-	var pickup_items = get_tree().get_nodes_in_group("pickup_items")
-	for item in pickup_items:
-		if item.has_signal("item_picked_up"):
-			if not item.item_picked_up.is_connected(_on_item_picked_up):
-				item.item_picked_up.connect(_on_item_picked_up)
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("interact"):
+		_try_interact()
+
+func _try_interact() -> void:
+	# If holding something, drop it
+	if inventory.has_item():
+		var drop_pos := global_position + Vector2(0, 10) # tiny offset so it doesn't sit inside player
+		inventory.drop(drop_pos, get_parent()) # parent is World per your setup
+		print("dropped")
+		return
+
+	# Otherwise pick up nearest
+	var item := _get_nearest_nearby_item()
+	print('nearest item:',item)
+	if item == null:
+		print("no item nearby")
+		return
+
+	if inventory.pickup(item):
+		nearby_items.erase(item) 
+		print("picked up:", item.item_id)
+
+func _get_nearest_nearby_item() -> Item:
+	print('in nearest nearby item')
+	print("nearby items", nearby_items)
+	var best: Item = null
+	var best_d := INF
+
+	# Clean nulls, in case something was programaticaly freed
+	for i in range(nearby_items.size() - 1, -1, -1):
+		if nearby_items[i] == null:
+			nearby_items.remove_at(i)
+
+	for item in nearby_items:
+		var d := global_position.distance_to(item.global_position)
+		if d < best_d:
+			best_d = d
+			best = item
+
+	return best
 
 func _physics_process(delta: float) -> void:
 	# Don't process movement while performing actions
@@ -342,39 +391,3 @@ func _update_animation() -> void:
 	# Only change animation if different from current
 	if animated_sprite.animation != anim_name:
 		animated_sprite.play(anim_name)
-
-func _on_item_picked_up(_item: Area2D, item_texture: Texture2D, item_name: String) -> void:
-	# If already holding something, add it to inventory first
-	if held_item_name != "":
-		inventory.append(held_item_name)
-		print("Dropped from hand to inventory: ", held_item_name)
-	
-	# Pick up new item and display it
-	held_item = item_texture
-	held_item_name = item_name
-	
-	# Show the held item sprite
-	var held_item_node = get_node_or_null("held_item")
-	if held_item_node and held_item:
-		held_item_node.texture = held_item
-		held_item_node.visible = true
-	
-	inventory.append(item_name)
-	print("Picked up and now carrying: ", item_name)
-	print("Inventory: ", inventory)
-
-func drop_held_item() -> void:
-	# Drop the currently held item back to inventory
-	if held_item_name != "":
-		print("Dropped: ", held_item_name)
-		held_item = null
-		held_item_name = ""
-		var held_item_node = get_node_or_null("held_item")
-		if held_item_node:
-			held_item_node.visible = false
-
-func get_inventory() -> Array[String]:
-	return inventory
-
-func get_held_item() -> String:
-	return held_item_name

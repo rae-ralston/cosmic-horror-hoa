@@ -8,7 +8,6 @@ func _ready() -> void:
 	_refresh()
 
 func _on_citations_changed() -> void:
-	print('UI received on citations changed')
 	_refresh()
 
 func _refresh() -> void:
@@ -16,7 +15,6 @@ func _refresh() -> void:
 		child.queue_free()
 	
 	var rows = CitationsManager.get_active_list_for_ui()
-	print("UI refresh Rows: ", rows.size())
 
 	if rows.is_empty():
 		var empty := Label.new()

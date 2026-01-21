@@ -1,4 +1,6 @@
 extends Control
+class_name World
+
 @onready var CitationsManager: Node = $CitationsManager
 @onready var danger_overlay: ColorRect = $DangerOverlayLayer/DangerOverlay
 
