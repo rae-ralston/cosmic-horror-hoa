@@ -74,7 +74,6 @@ func get_active_list_for_ui() -> Array:
 	return rows
 
 func start_day():
-	print('starting day!')
 	emit_signal("citations_changed")
 
 func _ready() -> void:

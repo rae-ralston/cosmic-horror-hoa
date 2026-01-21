@@ -1,11 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://bsneu6mo1x44l"]
+[gd_scene load_steps=12 format=3 uid="uid://bsneu6mo1x44l"]
 
 [ext_resource type="Script" uid="uid://bhyrnlv1g4ay5" path="res://scripts/game.gd" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://dfxx88ir3r5eg" path="res://scenes/environment.tscn" id="2_yqjtg"]
 [ext_resource type="Script" uid="uid://cil60usxpugy6" path="res://scripts/citations_manager.gd" id="3_lnu2h"]
 [ext_resource type="Script" uid="uid://c8uqcx2xh0341" path="res://scripts/citations_list_ui.gd" id="5_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://j28d6tuyrgp6" path="res://scenes/timer_display.tscn" id="6_p57ef"]
-[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="6_player"]
+[ext_resource type="PackedScene" uid="uid://mdsr1aaoki0k" path="res://scenes/player.tscn" id="6_player"]
+[ext_resource type="Script" uid="uid://h06u2lhc0alq" path="res://scripts/item.gd" id="7_gee14"]
+[ext_resource type="Texture2D" uid="uid://bh177mk48wv3j" path="res://assets/sprites/decor/Flowers.png" id="7_u5sy4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p57ef"]
 border_width_left = 1
@@ -30,6 +32,9 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	pass
 "
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gee14"]
+size = Vector2(5.8485603, 10.246149)
 
 [node name="game" type="Control"]
 layout_mode = 3
@@ -101,9 +106,9 @@ grow_vertical = 1
 
 [node name="GameView" type="SubViewportContainer" parent="."]
 layout_mode = 0
-offset_left = 2.0
+offset_left = 16.0
 offset_top = 1.0
-offset_right = 1151.0
+offset_right = 1165.0
 offset_bottom = 651.0
 stretch = true
 
@@ -121,6 +126,19 @@ position = Vector2(106.38816, 97.753845)
 
 [node name="player" parent="GameView/GameViewport/World" instance=ExtResource("6_player")]
 
-[node name="Camera2D" type="Camera2D" parent="GameView/GameViewport/World/player"]
+[node name="ItemFlowerPot" type="Area2D" parent="GameView/GameViewport/World"]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("7_gee14")
+
+[node name="Sprite2D" type="Sprite2D" parent="GameView/GameViewport/World/ItemFlowerPot"]
+position = Vector2(46.231503, 34.33846)
+texture = ExtResource("7_u5sy4")
+region_enabled = true
+region_rect = Rect2(84, 79.3235, 8.102829, 16.948715)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameView/GameViewport/World/ItemFlowerPot"]
+position = Vector2(45.81375, 36.692303)
+shape = SubResource("RectangleShape2D_gee14")
 
 [connection signal="citations_changed" from="CitationsManager" to="." method="_on_citations_manager_citations_changed"]
