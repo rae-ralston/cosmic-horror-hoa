@@ -127,19 +127,18 @@ position = Vector2(106.38816, 97.753845)
 [node name="player" parent="GameView/GameViewport/World" instance=ExtResource("6_player")]
 
 [node name="ItemFlowerPot" type="Area2D" parent="GameView/GameViewport/World"]
+position = Vector2(114.74325, 32.67692)
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("7_gee14")
 item_id = "\"flower_pot\""
 
 [node name="Sprite2D" type="Sprite2D" parent="GameView/GameViewport/World/ItemFlowerPot"]
-position = Vector2(46.231503, 34.33846)
 texture = ExtResource("7_u5sy4")
 region_enabled = true
 region_rect = Rect2(84, 79.3235, 8.102829, 16.948715)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GameView/GameViewport/World/ItemFlowerPot"]
-position = Vector2(45.81375, 36.692303)
 shape = SubResource("RectangleShape2D_gee14")
 
 [connection signal="citations_changed" from="CitationsManager" to="." method="_on_citations_manager_citations_changed"]

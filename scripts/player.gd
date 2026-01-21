@@ -48,14 +48,11 @@ func _ready() -> void:
 	animated_sprite.animation_finished.connect(_on_animation_finished)
 
 func _on_interact_area_entered(area: Area2D) -> void:
-	print("ENTER:", area.name, " type=", area.get_class())
 	if area is Item:
 		var item := area as Item
 		nearby_items.append(item)
-		print("nearby +", item.item_id, " node=", item.name)
 
 func _on_interact_area_exited(area: Area2D) -> void:
-	print("EXIT:", area.name)
 	if area is Item:
 		var item:= area as Item
 		nearby_items.erase(item)
@@ -243,25 +240,18 @@ func _unhandled_input(event: InputEvent) -> void:
 func _try_interact() -> void:
 	# If holding something, drop it
 	if inventory.has_item():
-		var drop_pos := global_position + Vector2(0, 10) # tiny offset so it doesn't sit inside player
-		inventory.drop(drop_pos, get_parent()) # parent is World per your setup
-		print("dropped")
+		inventory.drop(_get_drop_position(), get_parent()) # parent is World per your setup
 		return
 
 	# Otherwise pick up nearest
 	var item := _get_nearest_nearby_item()
-	print('nearest item:',item)
 	if item == null:
-		print("no item nearby")
 		return
 
 	if inventory.pickup(item):
-		nearby_items.erase(item) 
-		print("picked up:", item.item_id)
+		nearby_items.erase(item)
 
 func _get_nearest_nearby_item() -> Item:
-	print('in nearest nearby item')
-	print("nearby items", nearby_items)
 	var best: Item = null
 	var best_d := INF
 
@@ -275,8 +265,21 @@ func _get_nearest_nearby_item() -> Item:
 		if d < best_d:
 			best_d = d
 			best = item
-
+	
 	return best
+
+func _get_drop_position() -> Vector2:
+	var offset := Vector2.ZERO
+	
+	match current_direction:
+		"up": offset = Vector2(0, -12)
+		"down": offset = Vector2(0, 12)
+		"left": offset = Vector2(-12, 0)
+		"right": offset = Vector2(12, 0)
+		_: offset = Vector2(0, 12)
+	
+	var drop_pos := global_position + offset
+	return drop_pos
 
 func _physics_process(delta: float) -> void:
 	# Don't process movement while performing actions
