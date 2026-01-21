@@ -29,12 +29,6 @@ var nearby_items: Array[Item] = []
 
 
 func _ready() -> void:
-	#TEMP & TESTING
-	$Inventory.held_item_changed.connect(func(item):
-		print("held changed: ", item.item_id if item else "empty")
-	)
-	#END TEMP & TESTING
-	
 	#player interact area for picking up items
 	interact_area.area_entered.connect(_on_interact_area_entered)
 	interact_area.area_exited.connect(_on_interact_area_exited)
@@ -46,8 +40,6 @@ func _ready() -> void:
 	var held_item_node = get_node_or_null("held_item")
 	if held_item_node:
 		held_item_node.visible = false
-	# Connect to pickup items in the scene
-	#_connect_to_pickup_items()
 	
 	# Start with idle animation
 	animated_sprite.play("idle_down")
@@ -60,14 +52,13 @@ func _on_interact_area_entered(area: Area2D) -> void:
 	if area is Item:
 		var item := area as Item
 		nearby_items.append(item)
-		print("nearby +add ", item.item_id)
+		print("nearby +", item.item_id, " node=", item.name)
 
 func _on_interact_area_exited(area: Area2D) -> void:
 	print("EXIT:", area.name)
 	if area is Item:
 		var item:= area as Item
 		nearby_items.erase(item)
-		print("nearby -remove ", item.item_id)
 
 func _setup_animations() -> void:
 	var sprite_sheet = preload("res://assets/sprites/main_character.png")
