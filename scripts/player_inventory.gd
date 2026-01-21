@@ -44,15 +44,13 @@ func drop(drop_global_pos: Vector2, world_parent: Node = null) -> bool:
 	# Reparent/give item back to world instead of player
 	if world_parent:
 		item.reparent(world_parent)
-		# IMPORTANT: After reparenting, we need to set global_position
-		# because reparenting can change the global position calculation
 		item.global_position = drop_global_pos
 	else:
-		# If no world_parent, just set position relative to current parent
 		item.global_position = drop_global_pos
 	
-	# In player_inventory.gd, in the drop() function, after _set_item_held_state:
 	_set_item_held_state(item, false)
+	emit_signal("held_item_changed", null)
+	
 	return true
 
 func _set_item_held_state(item: Item, is_held: bool) -> void:

@@ -276,9 +276,7 @@ func _get_drop_position() -> Vector2:
 		"down": offset = Vector2(0, 12)
 		"left": offset = Vector2(-12, 0)
 		"right": offset = Vector2(12, 0)
-		_: 
-			# Default case - shouldn't happen but helps debug
-			offset = Vector2(0, 12)
+		_: offset = Vector2(0, 12)
 	
 	var drop_pos := global_position + offset
 	return drop_pos
