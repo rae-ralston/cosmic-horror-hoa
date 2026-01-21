@@ -27,6 +27,12 @@ var nearby_items: Array[Item] = []
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
+# Footstep audio
+@onready var footstep_player: AudioStreamPlayer2D = $FootstepPlayer
+var footstep_timer: float = 0.0
+const WALK_STEP_INTERVAL: float = 0.4  # seconds between steps
+const CRAWL_STEP_INTERVAL: float = 0.6  # slower when crawling
+
 
 func _ready() -> void:
 	#player interact area for picking up items
@@ -270,16 +276,55 @@ func _get_nearest_nearby_item() -> Item:
 
 func _get_drop_position() -> Vector2:
 	var offset := Vector2.ZERO
-	
+
 	match current_direction:
 		"up": offset = Vector2(0, -12)
 		"down": offset = Vector2(0, 12)
 		"left": offset = Vector2(-12, 0)
 		"right": offset = Vector2(12, 0)
 		_: offset = Vector2(0, 12)
-	
+
 	var drop_pos := global_position + offset
 	return drop_pos
+
+func _process_footsteps(delta: float) -> void:
+	# Only play footsteps when moving (not during actions)
+	if not is_moving or is_plowing or is_watering or is_digging:
+		footstep_timer = 0.0
+		return
+
+	# Determine interval based on movement type
+	var interval = CRAWL_STEP_INTERVAL if is_crawling else WALK_STEP_INTERVAL
+
+	# Accumulate time and play when interval reached
+	footstep_timer += delta
+	if footstep_timer >= interval:
+		footstep_timer = 0.0
+		if footstep_player:
+			footstep_player.play()
+
+func _get_current_surface() -> String:
+	# MVP: Default to grass everywhere
+	# Future enhancement: Detect sidewalk tiles and return "sidewalk" when applicable
+	return "grass"
+
+	# Future implementation for surface detection:
+	# var environment = get_parent().get_node_or_null("Environment")
+	# if not environment:
+	# 	return "grass"
+	#
+	# var sidewalk_layer = environment.get_node_or_null("sidewalk")
+	# if not sidewalk_layer:
+	# 	return "grass"
+	#
+	# var local_pos = sidewalk_layer.to_local(global_position)
+	# var cell_coords = sidewalk_layer.local_to_map(local_pos)
+	# var source_id = sidewalk_layer.get_cell_source_id(cell_coords)
+	#
+	# if source_id != -1:
+	# 	return "sidewalk"
+	#
+	# return "grass"
 
 func _physics_process(delta: float) -> void:
 	# Don't process movement while performing actions
@@ -342,6 +387,9 @@ func _physics_process(delta: float) -> void:
 	
 	# Move the character
 	move_and_slide()
+
+	# Process footsteps
+	_process_footsteps(delta)
 
 func _start_plow() -> void:
 	is_plowing = true
