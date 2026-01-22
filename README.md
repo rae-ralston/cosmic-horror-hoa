@@ -1,4 +1,4 @@
-# cosmic-horror-hoa 
+# The Eye of the HOA
 
 
 ## resources:
