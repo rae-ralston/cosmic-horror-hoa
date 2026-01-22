@@ -9,6 +9,7 @@
 used assets (with commercial/free use licenses)
 - [Cute Fantasy RPG asset pack by Kenmi](https://kenmi-art.itch.io/cute-fantasy-rpg)
 - landing page graphic, v1: [Killer Rabbit Media](https://www.instagram.com/killerrabbitmedia/), [source](https://www.reddit.com/r/PixelArt/comments/zp5wo0/the_suburbs/)
+- Music by [Ethan (link needed?)](#) and [Nick Tuttle](https://www.youtube.com/channel/UCGoMMFgbbAWefB8qoYbwPVw)
 
 
 ## theme: The World is Watching
