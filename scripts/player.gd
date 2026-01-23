@@ -28,10 +28,10 @@ var nearby_items: Array[Item] = []
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 # Footstep audio
-@onready var footstep_player: AudioStreamPlayer2D = $FootstepPlayer
+@onready var footstep_player: AudioStreamPlayer = $FootstepPlayer
 var footstep_timer: float = 0.0
-const WALK_STEP_INTERVAL: float = 0.4  # seconds between steps
-const CRAWL_STEP_INTERVAL: float = 0.6  # slower when crawling
+const WALK_STEP_INTERVAL: float = 0.27  # seconds between steps
+const CRAWL_STEP_INTERVAL: float = 0.47  # slower when crawling
 
 
 func _ready() -> void:
