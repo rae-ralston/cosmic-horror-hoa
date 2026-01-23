@@ -1,0 +1,79 @@
+[gd_scene load_steps=6 format=3 uid="uid://cw5gt2i0o4gvk"]
+
+[ext_resource type="Script" uid="uid://cil60usxpugy6" path="res://scripts/citations_manager.gd" id="1_ikhmp"]
+[ext_resource type="Script" uid="uid://c8uqcx2xh0341" path="res://scripts/citations_list_ui.gd" id="2_fklr4"]
+[ext_resource type="PackedScene" uid="uid://j28d6tuyrgp6" path="res://scenes/timer_display.tscn" id="3_be1uq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p57ef"]
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="GDScript" id="GDScript_lbhrr"]
+script/source = "extends VBoxContainer
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta: float) -> void:
+	pass
+"
+
+[node name="CitationsManager" type="Node"]
+script = ExtResource("1_ikhmp")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CitationListUI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_fklr4")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CitationListUI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -390.0
+offset_bottom = 230.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="Panel" type="Panel" parent="CanvasLayer/CitationListUI/MarginContainer"]
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p57ef")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/CitationListUI/MarginContainer/Panel"]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 200.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Rows" type="VBoxContainer" parent="CanvasLayer/CitationListUI/MarginContainer/Panel/MarginContainer"]
+layout_mode = 2
+script = SubResource("GDScript_lbhrr")
+
+[node name="TimerDisplay" parent="CanvasLayer" instance=ExtResource("3_be1uq")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_bottom = 0.0
+grow_horizontal = 0
+grow_vertical = 1
