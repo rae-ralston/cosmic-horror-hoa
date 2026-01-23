@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
 [ext_resource type="Script" uid="uid://cve4uwcqk0ws3" path="res://scripts/player_inventory.gd" id="3_inventory"]
-[ext_resource type="AudioStream" path="res://assets/sound/footsteps/grass-step-1.wav" id="4_footstep1"]
-[ext_resource type="AudioStream" path="res://assets/sound/footsteps/grass-step-2.wav" id="5_footstep2"]
-[ext_resource type="AudioStream" path="res://assets/sound/footsteps/grass-step-3.wav" id="6_footstep3"]
-[ext_resource type="AudioStream" path="res://assets/sound/footsteps/grass-step-4.wav" id="7_footstep4"]
+[ext_resource type="AudioStream" uid="uid://bc25f4m5xbd6n" path="res://assets/sound/footsteps/grass-step-1.wav" id="4_footstep1"]
+[ext_resource type="AudioStream" uid="uid://ve6mwympf058" path="res://assets/sound/footsteps/grass-step-2.wav" id="5_footstep2"]
+[ext_resource type="AudioStream" uid="uid://qt6ir55rf863" path="res://assets/sound/footsteps/grass-step-3.wav" id="6_footstep3"]
+[ext_resource type="AudioStream" uid="uid://bn5qc24rhtrb" path="res://assets/sound/footsteps/grass-step-4.wav" id="7_footstep4"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 8.0
@@ -15,18 +15,13 @@ height = 16.0
 radius = 28.0
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_footsteps"]
-playback_mode = 0
 random_pitch = 1.05
 random_volume_offset_db = 2.0
 streams_count = 4
 stream_0/stream = ExtResource("4_footstep1")
-stream_0/weight = 1.0
 stream_1/stream = ExtResource("5_footstep2")
-stream_1/weight = 1.0
 stream_2/stream = ExtResource("6_footstep3")
-stream_2/weight = 1.0
 stream_3/stream = ExtResource("7_footstep4")
-stream_3/weight = 1.0
 
 [node name="player" type="CharacterBody2D"]
 script = ExtResource("1_player")
@@ -58,3 +53,4 @@ shape = SubResource("CircleShape2D_g2els")
 stream = SubResource("AudioStreamRandomizer_footsteps")
 volume_db = -12.0
 pitch_scale = 1.4
+bus = &"Footsteps"

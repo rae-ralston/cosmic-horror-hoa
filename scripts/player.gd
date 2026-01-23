@@ -288,8 +288,12 @@ func _get_drop_position() -> Vector2:
 	return drop_pos
 
 func _process_footsteps(delta: float) -> void:
-	# Only play footsteps when moving (not during actions)
-	if not is_moving or is_plowing or is_watering or is_digging:
+	# Only play footsteps when actually moving (not during actions)
+	# Check velocity instead of is_moving to account for friction/acceleration
+	const MOVEMENT_THRESHOLD: float = 10.0  # pixels per second
+	var actually_moving = velocity.length() > MOVEMENT_THRESHOLD
+
+	if not actually_moving or is_plowing or is_watering or is_digging:
 		footstep_timer = 0.0
 		return
 
