@@ -13,7 +13,6 @@ const COLUMNS: int = 6
 # Animation tracking
 var current_direction: String = "down"
 var is_moving: bool = false
-
 var is_plowing: bool = false
 var is_watering: bool = false
 
@@ -25,6 +24,9 @@ var nearby_items: Array[Item] = []
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
+@onready var placement_area: Area2D = $PlacementDetectionArea
+var nearby_zones: Array[PlacementZone] = []
+
 # Footstep audio
 @onready var footstep_player: AudioStreamPlayer = $FootstepPlayer
 var footstep_timer: float = 0.0
@@ -34,6 +36,10 @@ func _ready() -> void:
 	#player interact area for picking up items
 	interact_area.area_entered.connect(_on_interact_area_entered)
 	interact_area.area_exited.connect(_on_interact_area_exited)
+	
+	#placement zones for solving puzzles
+	placement_area.area_entered.connect(_on_placement_zone_entered)
+	placement_area.area_exited.connect(_on_placement_zone_exited)
 	
 	# Setup animations from sprite sheet
 	_setup_animations()
@@ -58,6 +64,14 @@ func _on_interact_area_exited(area: Area2D) -> void:
 	if area is Item:
 		var item:= area as Item
 		nearby_items.erase(item)
+
+func _on_placement_zone_entered(area: Area2D) -> void:
+	if area is PlacementZone:
+		nearby_zones.append(area as PlacementZone)
+
+func _on_placement_zone_exited(area: Area2D) -> void:
+	if area is PlacementZone:
+		nearby_zones.erase(area as PlacementZone)
 
 func _add_anim(frames: SpriteFrames, sheet: Texture2D, animName: String, row: int, start: int, count: int, fps: float, loop: bool) -> void:
 	frames.add_animation(animName)
@@ -140,8 +154,18 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _try_interact() -> void:
 	# If holding something, drop it
+	# if drop zone is close put it there
 	if inventory.has_item():
-		inventory.drop(_get_drop_position(), get_parent()) # parent is World per your setup
+		var held := inventory.get_held_item()
+		var drop_pos := _get_drop_position()
+		var zone := _get_best_zone_for(held.item_id)
+		
+		if zone != null:
+			drop_pos = zone.get_snap_global_position()
+			inventory.drop(drop_pos, get_parent())
+			held.state["placed_zone"] = zone.name
+		
+		inventory.drop(drop_pos, world)
 		return
 
 	# Otherwise pick up nearest
@@ -166,6 +190,24 @@ func _get_nearest_nearby_item() -> Item:
 		if d < best_d:
 			best_d = d
 			best = item
+	
+	return best
+
+func _get_best_zone_for(item_id: String) -> PlacementZone:
+	var best: PlacementZone = null
+	var best_d := INF
+	
+	for i in range(nearby_zones.size() -1, -1, -1):
+		if nearby_zones[i] == null:
+			nearby_zones.remove_at(i)
+	
+	for z in nearby_zones:
+		if not z.accepts(item_id):
+			continue
+		var d := global_position.distance_to(z.get_snap_global_position())
+		if d < best_d:
+			best_d = d
+			best = z
 	
 	return best
 
