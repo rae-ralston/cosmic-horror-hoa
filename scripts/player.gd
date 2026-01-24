@@ -2,7 +2,6 @@ extends CharacterBody2D
 
 # Movement variables
 @export var speed: float = 200.0
-@export var crawl_speed: float = 80.0
 @export var acceleration: float = 1000.0
 @export var friction: float = 1000.0
 
@@ -14,10 +13,9 @@ const COLUMNS: int = 6
 # Animation tracking
 var current_direction: String = "down"
 var is_moving: bool = false
-var is_crawling: bool = false
+
 var is_plowing: bool = false
 var is_watering: bool = false
-var is_digging: bool = false
 
 # Inventory system
 @onready var inventory: PlayerInventory = $Inventory
@@ -31,8 +29,6 @@ var nearby_items: Array[Item] = []
 @onready var footstep_player: AudioStreamPlayer = $FootstepPlayer
 var footstep_timer: float = 0.0
 const WALK_STEP_INTERVAL: float = 0.27  # seconds between steps
-const CRAWL_STEP_INTERVAL: float = 0.47  # slower when crawling
-
 
 func _ready() -> void:
 	#player interact area for picking up items
@@ -63,6 +59,17 @@ func _on_interact_area_exited(area: Area2D) -> void:
 		var item:= area as Item
 		nearby_items.erase(item)
 
+func _add_anim(frames: SpriteFrames, sheet: Texture2D, animName: String, row: int, start: int, count: int, fps: float, loop: bool) -> void:
+	frames.add_animation(animName)
+	frames.set_animation_speed(animName, fps)
+	frames.set_animation_loop(animName, loop)
+	
+	for i in range(count):
+		var atlas := AtlasTexture.new()
+		atlas.atlas = sheet
+		atlas.region = Rect2((start + i) * FRAME_WIDTH, row * FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)
+		frames.add_frame(animName, atlas)
+
 func _setup_animations() -> void:
 	var sprite_sheet = preload("res://assets/sprites/main_character.png")
 	var sprite_frames = SpriteFrames.new()
@@ -71,171 +78,59 @@ func _setup_animations() -> void:
 	if sprite_frames.has_animation("default"):
 		sprite_frames.remove_animation("default")
 	
-	# Define animations: name -> [row, frame_count]
-	# Based on the sprite sheet layout:
-	# Row 0: Walk down (6 frames)
-	# Row 1: Walk right (6 frames)  
-	# Row 2: Walk up (6 frames)
-	# Row 5: Walk left (6 frames)
+	# Define animations: name -> [row, start_frame, frame_count, fps, loop]
+	
 	var walk_animations = {
-		"walk_down": [0, 6],
-		"walk_right": [1, 6],
-		"walk_up": [2, 6],
-		"walk_left": [5, 6]
+		"walk_down":  [3, 0, 6, 6.0, true],
+		"walk_right": [4, 0, 6, 6.0, true],
+		"walk_up":    [5, 0, 6, 6.0, true],
+		"walk_left":  [4, 0, 6, 6.0, true] 
 	}
 	
-	# Idle animations use first frame of each walk direction
 	var idle_animations = {
-		"idle_down": [0, 0],   # Row 0, frame 0
-		"idle_right": [1, 0],  # Row 1, frame 0
-		"idle_up": [2, 0],     # Row 2, frame 0
-		"idle_left": [5, 0]    # Row 5, frame 0
-	}
-	
-	# Crawl animations (row 6 based on sprite sheet)
-	var crawl_animations = {
-		"crawl_down": [6, 4],    # Row 6, 4 frames
-		"crawl_right": [6, 4],   # Row 6, 4 frames
-		"crawl_up": [6, 4],      # Row 6, 4 frames
-		"crawl_left": [6, 4]     # Row 6, 4 frames (flipped)
-	}
-	
-	# Crawl idle animations
-	var crawl_idle_animations = {
-		"crawl_idle_down": [6, 0],
-		"crawl_idle_right": [6, 0],
-		"crawl_idle_up": [6, 0],
-		"crawl_idle_left": [6, 0]
+		"idle_down":  [0, 0, 6, 6.0, true],
+		"idle_right": [1, 0, 6, 6.0, true],
+		"idle_up":    [2, 0, 6, 6.0, true],
+		"idle_left":  [1, 0, 6, 6.0, true] # uses right row; flip_h handles left
 	}
 	
 	# Plow animation (row 7)
 	var plow_animations = {
-		"plow_down": [7, 6],    # Row 7, 6 frames
-		"plow_right": [7, 6],   # Row 7, 6 frames
-		"plow_up": [7, 6],      # Row 7, 6 frames
-		"plow_left": [7, 6]     # Row 7, 6 frames (flipped)
+		"plow_down":  [8, 0, 6, 6.0, false],  
+		"plow_right": [7, 0, 6, 6.0, false], 
+		"plow_up":    [9, 0, 6, 6.0, false],    
+		"plow_left":  [7, 0, 6, 6.0, false]  #flips
 	}
 	
 	# Watering animations (rows 10-12)
 	# Row 10: water down, Row 11: water right, Row 12: water up
 	var water_animations = {
-		"water_down": [10, 6],   # Row 10, 6 frames
-		"water_right": [11, 6],  # Row 11, 6 frames
-		"water_up": [12, 6],     # Row 12, 6 frames
-		"water_left": [11, 6]    # Row 11, 6 frames (flipped for left)
-	}
-	
-	# Digging animations (rows 8-9)
-	# Row 8: dig down/right, Row 9: dig up
-	var dig_animations = {
-		"dig_down": [8, 6],     # Row 8, 6 frames
-		"dig_right": [8, 6],    # Row 8, 6 frames
-		"dig_up": [9, 6],       # Row 9, 6 frames
-		"dig_left": [8, 6]      # Row 8, 6 frames (flipped for left)
+		"water_down":  [11, 0, 6, 6.0, false],   
+		"water_right": [10, 0, 6, 6.0, false],  
+		"water_up":    [12, 0, 6, 6.0, false],     
+		"water_left":  [10, 0, 6, 6.0, false]    #flipped
 	}
 	
 	# Create walk animations
 	for anim_name in walk_animations:
-		var row = walk_animations[anim_name][0]
-		var frame_count = walk_animations[anim_name][1]
+		var spec = walk_animations[anim_name]
+		_add_anim(sprite_frames, sprite_sheet, anim_name, spec[0], spec[1], spec[2], spec[3], spec[4])
 		
-		sprite_frames.add_animation(anim_name)
-		sprite_frames.set_animation_speed(anim_name, 10.0)
-		sprite_frames.set_animation_loop(anim_name, true)
-		
-		for i in range(frame_count):
-			var atlas_texture = AtlasTexture.new()
-			atlas_texture.atlas = sprite_sheet
-			atlas_texture.region = Rect2(i * FRAME_WIDTH, row * FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)
-			sprite_frames.add_frame(anim_name, atlas_texture)
 	
 	# Create idle animations (single frame)
 	for anim_name in idle_animations:
-		var row = idle_animations[anim_name][0]
-		var frame = idle_animations[anim_name][1]
-		
-		sprite_frames.add_animation(anim_name)
-		sprite_frames.set_animation_speed(anim_name, 5.0)
-		sprite_frames.set_animation_loop(anim_name, true)
-		
-		var atlas_texture = AtlasTexture.new()
-		atlas_texture.atlas = sprite_sheet
-		atlas_texture.region = Rect2(frame * FRAME_WIDTH, row * FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)
-		sprite_frames.add_frame(anim_name, atlas_texture)
-	
-	# Create crawl animations
-	for anim_name in crawl_animations:
-		var row = crawl_animations[anim_name][0]
-		var frame_count = crawl_animations[anim_name][1]
-		
-		sprite_frames.add_animation(anim_name)
-		sprite_frames.set_animation_speed(anim_name, 8.0)
-		sprite_frames.set_animation_loop(anim_name, true)
-		
-		for i in range(frame_count):
-			var atlas_texture = AtlasTexture.new()
-			atlas_texture.atlas = sprite_sheet
-			atlas_texture.region = Rect2(i * FRAME_WIDTH, row * FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)
-			sprite_frames.add_frame(anim_name, atlas_texture)
-	
-	# Create crawl idle animations (single frame)
-	for anim_name in crawl_idle_animations:
-		var row = crawl_idle_animations[anim_name][0]
-		var frame = crawl_idle_animations[anim_name][1]
-		
-		sprite_frames.add_animation(anim_name)
-		sprite_frames.set_animation_speed(anim_name, 5.0)
-		sprite_frames.set_animation_loop(anim_name, true)
-		
-		var atlas_texture = AtlasTexture.new()
-		atlas_texture.atlas = sprite_sheet
-		atlas_texture.region = Rect2(frame * FRAME_WIDTH, row * FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)
-		sprite_frames.add_frame(anim_name, atlas_texture)
+		var spec = idle_animations[anim_name]
+		_add_anim(sprite_frames, sprite_sheet, anim_name, spec[0], spec[1], spec[2], spec[3], spec[4])
 	
 	# Create plow animations (non-looping action)
 	for anim_name in plow_animations:
-		var row = plow_animations[anim_name][0]
-		var frame_count = plow_animations[anim_name][1]
-		
-		sprite_frames.add_animation(anim_name)
-		sprite_frames.set_animation_speed(anim_name, 10.0)
-		sprite_frames.set_animation_loop(anim_name, false)  # Don't loop - play once
-		
-		for i in range(frame_count):
-			var atlas_texture = AtlasTexture.new()
-			atlas_texture.atlas = sprite_sheet
-			atlas_texture.region = Rect2(i * FRAME_WIDTH, row * FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)
-			sprite_frames.add_frame(anim_name, atlas_texture)
+		var spec = plow_animations[anim_name]
+		_add_anim(sprite_frames, sprite_sheet, anim_name, spec[0], spec[1], spec[2], spec[3], spec[4])
 	
 	# Create watering animations (non-looping action)
 	for anim_name in water_animations:
-		var row = water_animations[anim_name][0]
-		var frame_count = water_animations[anim_name][1]
-		
-		sprite_frames.add_animation(anim_name)
-		sprite_frames.set_animation_speed(anim_name, 8.0)
-		sprite_frames.set_animation_loop(anim_name, false)  # Don't loop - play once
-		
-		for i in range(frame_count):
-			var atlas_texture = AtlasTexture.new()
-			atlas_texture.atlas = sprite_sheet
-			atlas_texture.region = Rect2(i * FRAME_WIDTH, row * FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)
-			sprite_frames.add_frame(anim_name, atlas_texture)
-	
-	# Create digging animations (non-looping action)
-	for anim_name in dig_animations:
-		var row = dig_animations[anim_name][0]
-		var frame_count = dig_animations[anim_name][1]
-		
-		sprite_frames.add_animation(anim_name)
-		sprite_frames.set_animation_speed(anim_name, 10.0)
-		sprite_frames.set_animation_loop(anim_name, false)  # Don't loop - play once
-		
-		for i in range(frame_count):
-			var atlas_texture = AtlasTexture.new()
-			atlas_texture.atlas = sprite_sheet
-			atlas_texture.region = Rect2(i * FRAME_WIDTH, row * FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)
-			sprite_frames.add_frame(anim_name, atlas_texture)
+		var spec = water_animations[anim_name]
+		_add_anim(sprite_frames, sprite_sheet, anim_name, spec[0], spec[1], spec[2], spec[3], spec[4])
 	
 	animated_sprite.sprite_frames = sprite_frames
 
@@ -293,12 +188,12 @@ func _process_footsteps(delta: float) -> void:
 	const MOVEMENT_THRESHOLD: float = 10.0  # pixels per second
 	var actually_moving = velocity.length() > MOVEMENT_THRESHOLD
 
-	if not actually_moving or is_plowing or is_watering or is_digging:
+	if not actually_moving or is_plowing or is_watering:
 		footstep_timer = 0.0
 		return
 
 	# Determine interval based on movement type
-	var interval = CRAWL_STEP_INTERVAL if is_crawling else WALK_STEP_INTERVAL
+	var interval = WALK_STEP_INTERVAL
 
 	# Accumulate time and play when interval reached
 	footstep_timer += delta
@@ -332,12 +227,12 @@ func _get_current_surface() -> String:
 
 func _physics_process(delta: float) -> void:
 	# Don't process movement while performing actions
-	if is_plowing or is_watering or is_digging:
+	if is_plowing or is_watering:
 		velocity = Vector2.ZERO
 		move_and_slide()
 		return
 	
-	# Check for plow action (press E or Space to plow)
+	# Check for plow action (Space to plow)
 	if Input.is_action_just_pressed("plow"):
 		_start_plow()
 		return
@@ -347,21 +242,12 @@ func _physics_process(delta: float) -> void:
 		_start_water()
 		return
 	
-	# Check for dig action (press D to dig)
-	if Input.is_action_just_pressed("dig"):
-		_start_dig()
-		return
-	
-	# Check if crawling (hold Shift or Ctrl to crawl)
-	is_crawling = Input.is_action_pressed("crawl")
-	
 	# Get input direction
 	var input_vector := Vector2.ZERO
 	input_vector.x = Input.get_axis("ui_left", "ui_right")
 	input_vector.y = Input.get_axis("ui_up", "ui_down")
 	
-	# Determine current speed based on crawling state
-	var current_speed = crawl_speed if is_crawling else speed
+	var current_speed = speed
 	
 	# Normalize diagonal movement
 	if input_vector.length() > 0:
@@ -407,12 +293,6 @@ func _start_water() -> void:
 	animated_sprite.flip_h = (current_direction == "left")
 	animated_sprite.play(anim_name)
 
-func _start_dig() -> void:
-	is_digging = true
-	var anim_name = "dig_" + current_direction
-	animated_sprite.flip_h = (current_direction == "left")
-	animated_sprite.play(anim_name)
-
 func _on_animation_finished() -> void:
 	# When action animation finishes, return to normal state
 	if is_plowing:
@@ -421,27 +301,16 @@ func _on_animation_finished() -> void:
 	elif is_watering:
 		is_watering = false
 		_update_animation()
-	elif is_digging:
-		is_digging = false
-		_update_animation()
 
 func _update_animation() -> void:
 	var anim_name: String
 	
-	if is_crawling:
-		if is_moving:
-			anim_name = "crawl_" + current_direction
-		else:
-			anim_name = "crawl_idle_" + current_direction
-		# Flip sprite for left crawl (since we use same row as right)
-		animated_sprite.flip_h = (current_direction == "left")
+	if is_moving:
+		anim_name = "walk_" + current_direction
 	else:
-		if is_moving:
-			anim_name = "walk_" + current_direction
-		else:
-			anim_name = "idle_" + current_direction
-		# Reset flip for normal walking
-		animated_sprite.flip_h = false
+		anim_name = "idle_" + current_direction
+
+	animated_sprite.flip_h = (current_direction == "left")
 	
 	# Only change animation if different from current
 	if animated_sprite.animation != anim_name:
