@@ -1,16 +1,14 @@
 extends Area2D
 class_name Item
 
-@export var item_id: String = ""
+@export var item_id: String = "": set = set_item_id
 
+func set_item_id(value: String) -> void:
+	item_id = value
+	if is_node_ready():
+		_apply_visuals()
 
 var state: Dictionary = {}
-
-#func _normalize_id(raw: String) -> String:
-	#var key := raw.strip_edges()
-	#key = key.trim_prefix("\"").trim_suffix("\"")
-	#key = key.trim_prefix("'").trim_suffix("'")
-	#return key
 
 func _normalize_id(raw: String) -> String:
 	var key := raw.strip_edges()
@@ -36,3 +34,17 @@ func get_icon_texture() -> Texture2D:
 func _ready() -> void:
 	ItemRegistry.register(self)
 	add_to_group("pickup_items")
+	
+	_apply_visuals()
+
+func _apply_visuals() -> void:
+	var item_sprite = get_node_or_null("ItemSprite")
+	if not item_sprite:
+		return
+	
+	var texture := Items.get_world_texture(_normalize_id(item_id))
+	if texture != null:
+		item_sprite.texture = texture
+		item_sprite.region_enabled = false 
+	else:
+		push_warning("Item '%s' has no world texture" % item_id)
