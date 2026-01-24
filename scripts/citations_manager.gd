@@ -25,8 +25,6 @@ func load_json(path: String) -> Variant:
 		return null
 	
 	return structured_data
-	
-
 
 func get_active_list_for_ui() -> Array:
 	var rows: Array = []

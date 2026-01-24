@@ -1,11 +1,11 @@
 [gd_scene load_steps=12 format=3 uid="uid://bsneu6mo1x44l"]
 
 [ext_resource type="Script" uid="uid://bhyrnlv1g4ay5" path="res://scripts/game.gd" id="1_uwrxv"]
-[ext_resource type="Script" uid="uid://bc33ln64vga0w" path="res://scripts/inventory_hud.gd" id="2_0tnpc"]
+[ext_resource type="Script" path="res://scripts/inventory_hud.gd" id="2_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://dfxx88ir3r5eg" path="res://scenes/environment.tscn" id="2_yqjtg"]
 [ext_resource type="Script" uid="uid://cil60usxpugy6" path="res://scripts/citations_manager.gd" id="3_lnu2h"]
 [ext_resource type="Texture2D" uid="uid://biabks7tcdo6l" path="res://icon.svg" id="3_vtaks"]
-[ext_resource type="PackedScene" uid="uid://llv2q3dauk28" path="res://scenes/citation_list_ui.tscn" id="4_vtaks"]
+[ext_resource type="PackedScene" path="res://scenes/citation_list_ui.tscn" id="4_vtaks"]
 [ext_resource type="PackedScene" uid="uid://j28d6tuyrgp6" path="res://scenes/timer_display.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://mdsr1aaoki0k" path="res://scenes/player.tscn" id="6_player"]
 [ext_resource type="Script" uid="uid://h06u2lhc0alq" path="res://scripts/item.gd" id="7_gee14"]
