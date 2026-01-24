@@ -203,8 +203,10 @@ func _try_interact() -> void:
 		
 		if zone != null:
 			drop_pos = zone.get_snap_global_position()
-			held.state["placed_zone"] = zone.name
 			zone.hide_preview()
+			
+			zone.occupy(held.item_id)
+			held.state["placed_zone"] = zone.get_path() # store a NodePath
 		else:
 			# Hide preview if we had one but no longer have a valid zone
 			if current_preview_zone != null:
@@ -212,6 +214,7 @@ func _try_interact() -> void:
 		
 		current_preview_zone = null
 		inventory.drop(drop_pos, world)
+		_update_zone_player_feedback()
 		return
 
 	# Otherwise pick up nearest
@@ -221,6 +224,13 @@ func _try_interact() -> void:
 
 	if inventory.pickup(item):
 		nearby_items.erase(item)
+
+		var placed_zone_path = item.state.get("placed_zone", null)
+		if placed_zone_path != null:
+			var z := get_node_or_null(placed_zone_path) as PlacementZone
+			if z:
+				z.clear_occupancy()
+			item.state.erase("placed_zone")
 	
 	# to update placement zone preview
 	_update_zone_player_feedback()
@@ -251,7 +261,7 @@ func _get_best_zone_for(item_id: String) -> PlacementZone:
 			nearby_zones.remove_at(i)
 	
 	for z in nearby_zones:
-		if not z.accepts(item_id):
+		if not z.can_place(item_id):
 			continue
 		var d := global_position.distance_to(z.get_snap_global_position())
 		if d < best_d:

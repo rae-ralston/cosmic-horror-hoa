@@ -10,6 +10,9 @@ class_name PlacementZone
 @onready var preview_sprite: Sprite2D = get_node_or_null(preview_sprite_path)
 @onready var highlight: Sprite2D = get_node_or_null(highlight_path)
 
+signal occupancy_changed(zone: PlacementZone)
+var occupied_item_id: String = ""
+
 var pulse_time := 0.0
 
 func _process(delta: float) -> void:
@@ -50,3 +53,20 @@ func set_highlight (on: bool) -> void:
 		return
 	
 	highlight.visible = on
+
+func is_occupied() -> bool:
+	return occupied_item_id != ""
+
+func can_place(item_id: String) -> bool:
+	var ok := accepts(item_id) and not is_occupied()
+	return ok
+
+func occupy(item_id: String) -> void:
+	occupied_item_id = item_id
+	emit_signal("occupancy_changed", self)
+
+func clear_occupancy() -> void:
+	if occupied_item_id == "":
+		return
+	occupied_item_id = ""
+	emit_signal("occupancy_changed", self)
