@@ -63,7 +63,7 @@ The game includes a timer display in the top-right corner that:
 - Learning about Godot built-in classes (e.g., "How does Vector2 work in Godot?")
 - Verifying engine patterns or best practices (e.g., "What's the proper way to handle _process vs _physics_process?")
 
-**Important**: Always prefer querying the Godot MCP server over relying on memory when implementing GDScript features or working with Godot nodes. The MCP provides current, accurate Godot 4.5 documentation.
+**CRITICAL REQUIREMENT**: You MUST consult the Godot MCP server before implementing any GDScript features or working with Godot nodes. Never rely on memory for Godot API details - the MCP provides current, accurate Godot 4.5 documentation.
 
 **Usage Examples**:
 ```
@@ -219,7 +219,7 @@ Player actions follow this pattern:
 - **Node references**: Use `@onready` for node references that exist at scene load
 - **Type hints**: GDScript supports optional type hints (`: Type`)
 - **Signals**: Prefer signals over direct calls for decoupled communication
-- **API Documentation**: Always query the Godot MCP server for node methods, built-in classes, and GDScript features rather than relying on memory
+- **API Documentation**: You MUST query the Godot MCP server for node methods, built-in classes, and GDScript features - never rely on memory for Godot API details
 
 ### Game Jam Context
 
