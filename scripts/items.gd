@@ -11,7 +11,7 @@ const ITEMS_BY_ID := {
 		"pickupable": true,
 		"size_class": "small",
 		"icon_region": Rect2(0, 0, 16, 16),
-		"world_region": Rect2(81, 145, 16, 16),
+		"world_region": Rect2(80, 144, 16, 16),
 	},
 	"yard_flamingo": {
 		"id": "yard_flamingo",
@@ -19,7 +19,7 @@ const ITEMS_BY_ID := {
 		"pickupable": true,
 		"size_class": "medium",
 		"icon_region": Rect2(16, 0, 16, 16),
-		"world_region": Rect2(81, 129, 16, 16)
+		"world_region": Rect2(80, 128, 16, 16)
 	},
 	"welcome_mat": {
 		"id": "welcome_mat",
@@ -27,7 +27,7 @@ const ITEMS_BY_ID := {
 		"pickupable": true,
 		"size_class": "flat",
 		"icon_region": Rect2(32, 0, 16, 16),
-		"world_region": Rect2(81, 0, 16, 16)
+		"world_region": Rect2(80, 0, 16, 16)
 	}
 }
 

@@ -1,8 +1,12 @@
 extends Area2D
 class_name Item
 
-@export var item_id: String = ""
+@export var item_id: String = "": set = set_item_id
 
+func set_item_id(value: String) -> void:
+	item_id = value
+	if is_node_ready():
+		_apply_visuals()
 
 var state: Dictionary = {}
 
