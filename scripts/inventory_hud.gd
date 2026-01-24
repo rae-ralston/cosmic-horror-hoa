@@ -30,10 +30,7 @@ func _on_held_item_changed(item) -> void:
 		held_label.text = "hands: empty"
 		return
 	
-
-	print("HUD name=", item.get_display_name())
 	var icon: Texture2D = item.get_icon_texture()
-	print("HUD icon=", icon)
 	
 	held_icon.texture = icon
 	held_icon.visible = true
