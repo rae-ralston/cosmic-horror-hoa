@@ -43,14 +43,14 @@ func drop(drop_global_pos: Vector2, world_parent: Node = null) -> bool:
 	
 	# Reparent/give item back to world instead of player
 	if world_parent:
-		item.reparent(world_parent)
+		item.reparent(world_parent, true)
 		item.global_position = drop_global_pos
 	else:
 		item.global_position = drop_global_pos
 	
 	_set_item_held_state(item, false)
 	emit_signal("held_item_changed", null)
-	
+
 	return true
 
 func _set_item_held_state(item: Item, is_held: bool) -> void:

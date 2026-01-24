@@ -1,18 +1,22 @@
-[gd_scene load_steps=12 format=3 uid="uid://bsneu6mo1x44l"]
+[gd_scene load_steps=14 format=3 uid="uid://bsneu6mo1x44l"]
 
 [ext_resource type="Script" uid="uid://bhyrnlv1g4ay5" path="res://scripts/game.gd" id="1_uwrxv"]
-[ext_resource type="Script" path="res://scripts/inventory_hud.gd" id="2_0tnpc"]
+[ext_resource type="Script" uid="uid://bc33ln64vga0w" path="res://scripts/inventory_hud.gd" id="2_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://dfxx88ir3r5eg" path="res://scenes/environment.tscn" id="2_yqjtg"]
 [ext_resource type="Script" uid="uid://cil60usxpugy6" path="res://scripts/citations_manager.gd" id="3_lnu2h"]
 [ext_resource type="Texture2D" uid="uid://biabks7tcdo6l" path="res://icon.svg" id="3_vtaks"]
-[ext_resource type="PackedScene" path="res://scenes/citation_list_ui.tscn" id="4_vtaks"]
+[ext_resource type="PackedScene" uid="uid://llv2q3dauk28" path="res://scenes/citation_list_ui.tscn" id="4_vtaks"]
 [ext_resource type="PackedScene" uid="uid://j28d6tuyrgp6" path="res://scenes/timer_display.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://mdsr1aaoki0k" path="res://scenes/player.tscn" id="6_player"]
 [ext_resource type="Script" uid="uid://h06u2lhc0alq" path="res://scripts/item.gd" id="7_gee14"]
 [ext_resource type="Texture2D" uid="uid://bh177mk48wv3j" path="res://assets/sprites/decor/Flowers.png" id="7_u5sy4"]
+[ext_resource type="Script" uid="uid://cfd1rjp83hef0" path="res://scripts/placement_zone.gd" id="11_kvpfn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gee14"]
 size = Vector2(5.8485603, 10.246149)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kvpfn"]
+size = Vector2(40, 40)
 
 [node name="game" type="Control"]
 layout_mode = 3
@@ -117,5 +121,19 @@ region_rect = Rect2(84, 79.3235, 8.102829, 16.948715)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GameView/GameViewport/World/ItemFlowerPot"]
 shape = SubResource("RectangleShape2D_gee14")
+
+[node name="ZoneFlowerPot" type="Area2D" parent="GameView/GameViewport/World"]
+position = Vector2(223.35944, 133.2)
+script = ExtResource("11_kvpfn")
+allowed_item_ids = Array[String](["flower_pot"])
+snap_point_path = NodePath("SnapPoint")
+
+[node name="FlowerPotCollision" type="CollisionShape2D" parent="GameView/GameViewport/World/ZoneFlowerPot"]
+light_mask = 5
+visibility_layer = 5
+position = Vector2(0.27850723, -0.5538368)
+shape = SubResource("RectangleShape2D_kvpfn")
+
+[node name="SnapPoint" type="Marker2D" parent="GameView/GameViewport/World/ZoneFlowerPot"]
 
 [connection signal="citations_changed" from="CitationsManager" to="." method="_on_citations_manager_citations_changed"]

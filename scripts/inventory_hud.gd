@@ -24,7 +24,6 @@ func _ready() -> void:
 	_on_held_item_changed(inventory.get_held_item())
 
 func _on_held_item_changed(item) -> void:
-	print("HUD held changed item=", item)
 	if (item == null):
 		held_icon.texture = null
 		held_icon.visible = false
@@ -32,7 +31,6 @@ func _on_held_item_changed(item) -> void:
 		return
 	
 
-	print("HUD item_id=", item.item_id)
 	print("HUD name=", item.get_display_name())
 	var icon: Texture2D = item.get_icon_texture()
 	print("HUD icon=", icon)
