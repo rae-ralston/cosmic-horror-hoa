@@ -26,6 +26,8 @@ var nearby_items: Array[Item] = []
 
 @onready var placement_area: Area2D = $PlacementDetectionArea
 var nearby_zones: Array[PlacementZone] = []
+var current_preview_zone: PlacementZone = null
+var current_highlight_zone: PlacementZone = null
 
 # Footstep audio
 @onready var footstep_player: AudioStreamPlayer = $FootstepPlayer
@@ -72,6 +74,45 @@ func _on_placement_zone_entered(area: Area2D) -> void:
 func _on_placement_zone_exited(area: Area2D) -> void:
 	if area is PlacementZone:
 		nearby_zones.erase(area as PlacementZone)
+
+#func _update_zone_preview() -> void:
+func _update_zone_player_feedback() -> void:
+	# no held items, no zone previews
+	if not inventory.has_item():
+		if current_preview_zone != null:
+			current_preview_zone.hide_preview()
+			current_preview_zone = null
+		if current_highlight_zone != null:
+			current_highlight_zone.set_highlight(false)
+			current_highlight_zone = null
+		return
+	
+	var held := inventory.get_held_item()
+	if held == null:
+		return
+	
+	var best := _get_best_zone_for(held.item_id)
+	
+	# when zone changes, update visibility
+	if best != current_preview_zone:
+		if current_preview_zone != null:
+			current_preview_zone.hide_preview()
+		
+		current_preview_zone = best
+		
+		if current_preview_zone != null:
+			current_preview_zone.show_preview(held.item_id)
+
+	elif current_preview_zone != null:
+		current_preview_zone.show_preview(held.item_id)
+	
+	if best != current_highlight_zone:
+		if current_highlight_zone:
+			current_highlight_zone.set_highlight(false)
+		current_highlight_zone = best
+		if current_highlight_zone:
+			current_highlight_zone.set_highlight(true)
+	
 
 func _add_anim(frames: SpriteFrames, sheet: Texture2D, animName: String, row: int, start: int, count: int, fps: float, loop: bool) -> void:
 	frames.add_animation(animName)
@@ -162,9 +203,14 @@ func _try_interact() -> void:
 		
 		if zone != null:
 			drop_pos = zone.get_snap_global_position()
-			inventory.drop(drop_pos, get_parent())
 			held.state["placed_zone"] = zone.name
+			zone.hide_preview()
+		else:
+			# Hide preview if we had one but no longer have a valid zone
+			if current_preview_zone != null:
+				current_preview_zone.hide_preview()
 		
+		current_preview_zone = null
 		inventory.drop(drop_pos, world)
 		return
 
@@ -175,6 +221,9 @@ func _try_interact() -> void:
 
 	if inventory.pickup(item):
 		nearby_items.erase(item)
+	
+	# to update placement zone preview
+	_update_zone_player_feedback()
 
 func _get_nearest_nearby_item() -> Item:
 	var best: Item = null
@@ -313,15 +362,12 @@ func _physics_process(delta: float) -> void:
 		# Apply friction when no input
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
 		is_moving = false
-	
-	# Update animation
-	_update_animation()
-	
-	# Move the character
-	move_and_slide()
 
-	# Process footsteps
+	_update_animation()
+	move_and_slide()
 	_process_footsteps(delta)
+	#for preview in placement zones
+	_update_zone_player_feedback()
 
 func _start_plow() -> void:
 	is_plowing = true

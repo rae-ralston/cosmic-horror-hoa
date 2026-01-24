@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dnrn256j1jnpv"]
+[gd_scene load_steps=4 format=3 uid="uid://dnrn256j1jnpv"]
 
 [ext_resource type="Script" uid="uid://cfd1rjp83hef0" path="res://scripts/placement_zone.gd" id="1_vn8dm"]
+[ext_resource type="Texture2D" uid="uid://c4bfuqhgswir3" path="res://assets/sprites/zone_highlight_test.png" id="2_kx0hh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kvpfn"]
 size = Vector2(40, 40)
@@ -17,3 +18,12 @@ position = Vector2(0.27850723, -0.5538368)
 shape = SubResource("RectangleShape2D_kvpfn")
 
 [node name="ZoneSnapTo" type="Marker2D" parent="."]
+
+[node name="PreviewSprite" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.5)
+
+[node name="ZoneHighlight" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.21176471)
+texture = ExtResource("2_kx0hh")
