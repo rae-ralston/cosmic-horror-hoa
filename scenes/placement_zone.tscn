@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnrn256j1jnpv"]
+
+[ext_resource type="Script" uid="uid://cfd1rjp83hef0" path="res://scripts/placement_zone.gd" id="1_vn8dm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kvpfn"]
+size = Vector2(40, 40)
+
+[node name="PlacementZone" type="Area2D"]
+script = ExtResource("1_vn8dm")
+allowed_item_ids = Array[String](["flower_pot"])
+snap_point_path = NodePath("ZoneSnapTo")
+
+[node name="ZoneCollision" type="CollisionShape2D" parent="."]
+light_mask = 5
+visibility_layer = 5
+position = Vector2(0.27850723, -0.5538368)
+shape = SubResource("RectangleShape2D_kvpfn")
+
+[node name="ZoneSnapTo" type="Marker2D" parent="."]

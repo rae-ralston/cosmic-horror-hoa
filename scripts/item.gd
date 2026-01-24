@@ -6,12 +6,6 @@ class_name Item
 
 var state: Dictionary = {}
 
-#func _normalize_id(raw: String) -> String:
-	#var key := raw.strip_edges()
-	#key = key.trim_prefix("\"").trim_suffix("\"")
-	#key = key.trim_prefix("'").trim_suffix("'")
-	#return key
-
 func _normalize_id(raw: String) -> String:
 	var key := raw.strip_edges()
 	key = key.trim_prefix("\"").trim_suffix("\"")
@@ -36,3 +30,17 @@ func get_icon_texture() -> Texture2D:
 func _ready() -> void:
 	ItemRegistry.register(self)
 	add_to_group("pickup_items")
+	
+	_apply_visuals()
+
+func _apply_visuals() -> void:
+	var item_sprite = get_node_or_null("ItemSprite")
+	if not item_sprite:
+		return
+	
+	var texture := Items.get_world_texture(_normalize_id(item_id))
+	if texture != null:
+		item_sprite.texture = texture
+		item_sprite.region_enabled = false 
+	else:
+		push_warning("Item '%s' has no world texture" % item_id)

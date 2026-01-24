@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dnws8dw5c3xsc"]
+
+[ext_resource type="Script" uid="uid://h06u2lhc0alq" path="res://scripts/item.gd" id="1_s8enn"]
+[ext_resource type="Texture2D" uid="uid://bh177mk48wv3j" path="res://assets/sprites/decor/Flowers.png" id="2_6muww"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gee14"]
+size = Vector2(5.8485603, 10.246149)
+
+[node name="Item" type="Area2D"]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_s8enn")
+item_id = "flower_pot"
+
+[node name="ItemSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_6muww")
+region_enabled = true
+region_rect = Rect2(84, 79.3235, 8.102829, 16.948715)
+
+[node name="ItemCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_gee14")
