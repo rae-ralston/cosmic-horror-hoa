@@ -4,7 +4,9 @@ extends Control
 const CITATION_ROW_SCENE: PackedScene = preload("res://scenes/citation_row.tscn")
 
 func _ready() -> void:
-	CitationsManager.citations_changed.connect(_on_citations_changed)
+	await get_tree().process_frame
+	if not CitationsManager.citations_changed.is_connected(_on_citations_changed):
+		CitationsManager.citations_changed.connect(_on_citations_changed)
 	_refresh()
 
 func _on_citations_changed() -> void:
@@ -15,7 +17,7 @@ func _refresh() -> void:
 		child.queue_free()
 	
 	var rows = CitationsManager.get_active_list_for_ui()
-
+	
 	if rows.is_empty():
 		var empty := Label.new()
 		empty.text = "(No citations yet)"

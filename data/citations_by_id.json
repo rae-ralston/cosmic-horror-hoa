@@ -1,53 +1,19 @@
 {
-  "trash_align_north":{
-    "id": "trash_align_north",
-    "title": "Trash bin is not aligned with approved cardinal direction.",
-    "detail": "Rotate the bin so the handle faces Magnetic Compliance North.",
-    "priority": 10,
-    "deadline_phase": 0,
-    "tags": ["trash", "alignment"],
-    "sabotage_weight": 2,
-    "reopenable": true,
-    "max_reopens": 1,
-    "conditions": [
-      {
-        "type": "ITEM_ROTATION_NEAR",
-        "params": { "item_id": "trash_can", "angle": 0, "tolerance": 12 }
-      }
-    ]
-  },
-  "mailbox_flag_form_12b":{
-    "id": "mailbox_flag_form_12b",
-    "title": "Mailbox flag raised without filing Form 12-B: Joy.",
-    "detail": "Lower the flag immediately.",
-    "priority": 6,
-    "deadline_phase": 0,
-    "tags": ["mailbox", "toggle"],
-    "sabotage_weight": 1,
-    "reopenable": true,
-    "max_reopens": 2,
-    "conditions": [
-      {
-        "type": "ITEM_STATE_EQUALS",
-        "params": { "item_id": "mailbox", "key": "flag_up", "value": false }
-      }
-    ]
-  },
-  "welcome_mat_zone":{
-    "id": "welcome_mat_zone",
-    "title": "Welcome mat displays unregistered enthusiasm.",
-    "detail": "Place the mat back in the Approved Entry Zone.",
-    "priority": 4,
-    "deadline_phase": 0,
-    "tags": ["mat", "placement"],
-    "sabotage_weight": 1,
-    "reopenable": true,
-    "max_reopens": 1,
-    "conditions": [
-      {
-        "type": "ITEM_IN_ZONE",
-        "params": { "item_id": "welcome_mat", "zone_id": "entry_zone" }
-      }
-    ]
+  "flowerpot_missing":{
+	"id": "flowerpot_missing",
+	"title": "Flower pot violates aesthetic alignment",
+	"detail": "Your pot is not in its cosmically mandated location.",
+	"priority": 1,
+	"deadline_phase": 0,
+	"tags": ["mat", "placement"],
+	"sabotage_weight": 1,
+	"reopenable": true,
+	"max_reopens": 1,
+	"conditions": [
+	  {
+		"type": "ITEM_IN_ZONE",
+		"params": { "item_id": "flower_pot", "zone_id": "ZoneFlowerPot" }
+	  }
+	]
   }
 }
