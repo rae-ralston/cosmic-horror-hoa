@@ -16,22 +16,10 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_uwrxv")
 
-[node name="DangerOverlayCanvas" type="CanvasLayer" parent="."]
+[node name="HUD" type="CanvasLayer" parent="."]
 layer = 100
 
-[node name="DangerOverlay" type="ColorRect" parent="DangerOverlayCanvas"]
-modulate = Color(1, 1, 1, 0)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 0, 0, 1)
-
-[node name="InventoryOverlayCanvas" type="CanvasLayer" parent="."]
-
-[node name="InventoryHUD" type="Control" parent="InventoryOverlayCanvas"]
+[node name="Inventory" type="Control" parent="HUD"]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 38.0
@@ -41,7 +29,7 @@ offset_bottom = 609.0
 script = ExtResource("2_0tnpc")
 player_path = NodePath("../../GameView/GameViewport/World/player")
 
-[node name="HeldIcon" type="TextureRect" parent="InventoryOverlayCanvas/InventoryHUD"]
+[node name="HeldIcon" type="TextureRect" parent="HUD/Inventory"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
 anchors_preset = -1
@@ -56,13 +44,35 @@ offset_bottom = 583.28
 texture = ExtResource("3_vtaks")
 stretch_mode = 2
 
-[node name="HeldLabel" type="Label" parent="InventoryOverlayCanvas/InventoryHUD"]
+[node name="HeldLabel" type="Label" parent="HUD/Inventory"]
 layout_mode = 0
 offset_left = 5.0
 offset_top = 17.0
 offset_right = 55.0
 offset_bottom = 40.0
 text = "Empty"
+
+[node name="DangerOverlay" type="ColorRect" parent="HUD"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 1)
+
+[node name="DayStatus" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="EndGameScreen" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="CitationsManager" type="Node" parent="."]
 script = ExtResource("3_lnu2h")

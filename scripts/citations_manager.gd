@@ -70,7 +70,7 @@ func get_active_list_for_ui() -> Array:
 
 	return rows
 
-func start_day():
+func when_day_starts():
 	emit_signal("citations_changed")
 
 func _ready() -> void:
@@ -194,3 +194,9 @@ func reopen_random_resolved(from_sabotage_pool: bool = true) -> String:
 	print("[CIT] Reopened:", picked_id)
 	emit_signal("citations_changed")
 	return picked_id
+
+func are_all_active_resolved() -> bool:
+	for id in active_citations:
+		if not bool(resolved_citations.get(id, false)):
+			return false
+	return true
