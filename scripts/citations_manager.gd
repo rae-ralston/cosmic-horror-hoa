@@ -88,8 +88,9 @@ func _ready() -> void:
 func _on_zone_occupancy_changed(_zone: PlacementZone) -> void:
 	evaluate_all()
 
+
 func evaluate_all() -> void:
-	var _changed := false
+	var changed := false
 	
 	for id in data.keys():
 		var def: Dictionary = data[id]
@@ -98,15 +99,13 @@ func evaluate_all() -> void:
 		var prev := bool(resolved_citations.get(id, false))
 		if now_resolved != prev:
 			resolved_citations[id] = now_resolved
-			_changed = true
+			changed = true
 			print("[CIT] %s resolved=%s" % [id, now_resolved])
 		
-		if _changed:
-			print("[CIT] emitting citations_changed")
-			emit_signal("citations_changed")
-		
-		if now_resolved:
-			emit_signal("citations_changed")
+	if changed:
+		print("[CIT] emitting citations_changed")
+		emit_signal("citations_changed")
+
 
 func _is_citation_resolved(def: Dictionary) -> bool:
 	var conditions: Array = def.get("conditions", [])
@@ -120,7 +119,7 @@ func _is_citation_resolved(def: Dictionary) -> bool:
 	return true
 
 func _eval_condition(cond: Dictionary) -> bool:
-	var type := str(cond.get("type", ""))
+	var type := str(cond.get("type", "")).to_upper()
 	var params: Dictionary = cond.get("params", {})
 	
 	match type:
@@ -137,3 +136,61 @@ func _eval_condition(cond: Dictionary) -> bool:
 		_:
 			push_warning("[CIT] Unknown condition type '%s'" % type)
 			return false
+
+func activate_random_citation(from_sabotage_pool: bool = true) -> String:
+	var candidates: Array[String] =[]
+	
+	for id in data.keys():
+		if active_citations.has(id):
+			continue
+		
+		if bool(resolved_citations.get(id, false)):
+			continue
+
+		if from_sabotage_pool:
+			var def: Dictionary = data[id]
+			if not bool(def.get("is_sabotage_candidate", false)):
+				continue
+		
+		candidates.append(id)
+		
+	if candidates.is_empty():
+		print("[CIT] No available candidates to activate.")
+		return ''
+	
+	var picked_id: String = candidates[randi() % candidates.size()]
+	active_citations.append(picked_id)
+	new_citations[picked_id] = true
+	
+	print("[CIT] Activated:", picked_id)
+	emit_signal("citations_changed")
+	return picked_id
+
+func reopen_random_resolved(from_sabotage_pool: bool = true) -> String:
+	var candidates: Array[String] = []
+	
+	for id in data.keys():
+		if not bool(resolved_citations.get(id, false)):
+			continue
+		
+		if from_sabotage_pool:
+			var def: Dictionary = data[id]
+			if not bool(def.get("is_sabotage_candidate", false)):
+				continue
+		
+		candidates.append(id)
+	
+	if candidates.is_empty():
+		print("[CIT] No resolved citations to reopen.")
+		return ""
+	
+	var picked_id: String = candidates[randi() % candidates.size()]
+	resolved_citations[picked_id] = false
+	reopened_citations[picked_id] = true
+	
+	if not active_citations.has(picked_id):
+		active_citations.append(picked_id)
+	
+	print("[CIT] Reopened:", picked_id)
+	emit_signal("citations_changed")
+	return picked_id

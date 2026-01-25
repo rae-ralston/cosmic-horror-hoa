@@ -5,14 +5,31 @@
 	"detail": "Your pot is not in its cosmically mandated location.",
 	"priority": 1,
 	"deadline_phase": 0,
-	"tags": ["mat", "placement"],
+	"tags": ["placement"],
 	"sabotage_weight": 1,
-	"reopenable": true,
+	"is_sabotage_candidate": true,
 	"max_reopens": 1,
 	"conditions": [
 	  {
 		"type": "ITEM_IN_ZONE",
 		"params": { "item_id": "flower_pot", "zone_id": "ZoneFlowerPot" }
+	  }
+	]
+  },
+  "yard_flamingo":{
+	"id": "yard_flamingo",
+	"title": "Yard Flamingo in wrong spot",
+	"detail": "not good place",
+	"priority": 2,
+	"deadline_phase": 0,
+	"tags": [ "placement"],
+	"sabotage_weight": 1,
+	"is_sabotage_candidate": true,
+	"max_reopens": 1,
+	"conditions": [
+	  {
+		"type": "ITEM_IN_ZONE",
+		"params": { "item_id": "yard_flamingo", "zone_id": "ZoneFlamingo" }
 	  }
 	]
   }
