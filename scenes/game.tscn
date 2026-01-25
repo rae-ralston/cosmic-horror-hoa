@@ -102,7 +102,7 @@ position = Vector2(106.38816, 97.753845)
 
 [node name="FlowerPot" type="Node" parent="GameView/GameViewport/World"]
 
-[node name="PlacementZone" parent="GameView/GameViewport/World/FlowerPot" instance=ExtResource("9_vtaks")]
+[node name="ZoneFlowerPot" parent="GameView/GameViewport/World/FlowerPot" instance=ExtResource("9_vtaks")]
 position = Vector2(223.35944, 133.2)
 
 [node name="Item" parent="GameView/GameViewport/World/FlowerPot" instance=ExtResource("10_kvpfn")]
@@ -114,7 +114,7 @@ position = Vector2(114.74325, 32.67692)
 position = Vector2(16.431679, 106.33846)
 item_id = "yard_flamingo"
 
-[node name="PlacementZone" parent="GameView/GameViewport/World/Flamingo" instance=ExtResource("9_vtaks")]
+[node name="ZoneFlamingo" parent="GameView/GameViewport/World/Flamingo" instance=ExtResource("9_vtaks")]
 position = Vector2(50.687553, 153.41537)
 allowed_item_ids = Array[String](["yard_flamingo"])
 

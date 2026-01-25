@@ -15,6 +15,12 @@ var occupied_item_id: String = ""
 
 var pulse_time := 0.0
 
+func _ready() -> void:
+	ZoneRegistry.register(self)
+
+func _exit_tree() -> void:
+	ZoneRegistry.unregister(self)
+
 func _process(delta: float) -> void:
 	if highlight and highlight.visible:
 		pulse_time += delta
