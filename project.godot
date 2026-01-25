@@ -22,6 +22,7 @@ PhaseManager="*res://scripts/phase_manager.gd"
 ItemRegistry="*res://scripts/item_registry.gd"
 ZoneRegistry="*res://scripts/zone_registry.gd"
 SabotageManager="*res://scripts/sabotage_manager.gd"
+DayManager="*res://scripts/day_manager.gd"
 
 [input]
 

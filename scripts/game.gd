@@ -2,7 +2,10 @@ extends Control
 class_name World
 
 @onready var CitationsManager: Node = $CitationsManager
-@onready var danger_overlay: ColorRect = $DangerOverlayCanvas/DangerOverlay
+@onready var danger_overlay: ColorRect = $HUD/DangerOverlay
+var day_manager: DayManager = DayManager
+
+var game_over := false
 
 # Tween for smooth overlay transitions
 var overlay_tween: Tween = null
@@ -12,9 +15,10 @@ const DANGER_OVERLAY_ALPHA = 0.35
 const FADE_DURATION = 0.5
 
 func _ready() -> void:
-	CitationsManager.start_day()
-
-	# Connect to PhaseManager signals
+	day_manager.day_ended.connect(_on_day_ended)
+	day_manager.start_day()
+	CitationsManager.when_day_starts()
+	
 	PhaseManager.phase_changed.connect(_on_phase_changed)
 	PhaseManager.danger_started.connect(_on_danger_started)
 	PhaseManager.normal_resumed.connect(_on_normal_resumed)
@@ -70,3 +74,9 @@ func _fade_overlay_out() -> void:
 
 	# Fade overlay to fully transparent
 	overlay_tween.tween_property(danger_overlay, "modulate:a", 0.0, FADE_DURATION)
+	
+func _on_day_ended(win: bool) -> void:
+	game_over = true
+	get_tree().paused = true
+	print("[DAY] ended win=", win)
+	#$EndScreen.show_result(win)
