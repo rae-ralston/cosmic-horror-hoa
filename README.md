@@ -1,5 +1,20 @@
 # The Eye of the HOA 👁️
 
+## How to Run the Game
+
+1. **Download Godot 4.5** (or later) from [godotengine.org](https://godotengine.org/download/)
+   - Choose the standard version for your operating system (Windows, Mac, or Linux)
+   - No installation required - just extract and run
+
+2. **Open the project**
+   - Launch Godot
+   - In the Project Manager, click **Import**
+   - Navigate to this project folder and select `project.godot`
+   - Click **Import & Edit**
+
+3. **Play the game**
+   - Press **F5** (or click the play button ▶ in the top-right corner)
+
 ## Resources:
 
 - [project kanban board](https://github.com/users/rae-ralston/projects/3/settings)
