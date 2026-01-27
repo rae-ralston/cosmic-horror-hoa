@@ -23,6 +23,7 @@ ItemRegistry="*res://scripts/item_registry.gd"
 ZoneRegistry="*res://scripts/zone_registry.gd"
 SabotageManager="*res://scripts/sabotage_manager.gd"
 DayManager="*res://scripts/day_manager.gd"
+MusicManager="*res://scripts/music_manager.gd"
 
 [input]
 
