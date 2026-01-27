@@ -112,80 +112,77 @@ func _update_zone_player_feedback() -> void:
 		current_highlight_zone = best
 		if current_highlight_zone:
 			current_highlight_zone.set_highlight(true)
-	
 
-func _add_anim(frames: SpriteFrames, sheet: Texture2D, animName: String, row: int, start: int, count: int, fps: float, loop: bool) -> void:
+func _add_anim(
+	frames: SpriteFrames,
+	sheet: Texture2D,
+	animName: String,
+	frameCount: int,
+	fps: float,
+	loop: bool
+	) -> void:
 	frames.add_animation(animName)
 	frames.set_animation_speed(animName, fps)
 	frames.set_animation_loop(animName, loop)
 	
-	for i in range(count):
+	for i in range(frameCount):
 		var atlas := AtlasTexture.new()
 		atlas.atlas = sheet
-		atlas.region = Rect2((start + i) * FRAME_WIDTH, row * FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)
+		atlas.region = Rect2(i * FRAME_WIDTH, 0, FRAME_WIDTH, FRAME_HEIGHT)
 		frames.add_frame(animName, atlas)
 
+func _make_idle_from_walk(frames: SpriteFrames, idle_name: String, walk_name: String) -> void:
+	if not frames.has_animation(walk_name):
+		push_warning("Can't make %s: missing %s" % [idle_name, walk_name])
+		return
+
+	frames.add_animation(idle_name)
+	frames.set_animation_speed(idle_name, 1.0)
+	frames.set_animation_loop(idle_name, true)
+
+	var first: Texture2D = frames.get_frame_texture(walk_name, 0)
+	frames.add_frame(idle_name, first)
+
 func _setup_animations() -> void:
-	var sprite_sheet = preload("res://assets/sprites/main_character.png")
-	var sprite_frames = SpriteFrames.new()
-	
-	# Remove default animation if it exists
+	var sprite_frames := SpriteFrames.new()
 	if sprite_frames.has_animation("default"):
 		sprite_frames.remove_animation("default")
-	
-	# Define animations: name -> [row, start_frame, frame_count, fps, loop]
-	
-	var walk_animations = {
-		"walk_down":  [3, 0, 6, 6.0, true],
-		"walk_right": [4, 0, 6, 6.0, true],
-		"walk_up":    [5, 0, 6, 6.0, true],
-		"walk_left":  [4, 0, 6, 6.0, true] 
-	}
-	
-	var idle_animations = {
-		"idle_down":  [0, 0, 6, 6.0, true],
-		"idle_right": [1, 0, 6, 6.0, true],
-		"idle_up":    [2, 0, 6, 6.0, true],
-		"idle_left":  [1, 0, 6, 6.0, true] # uses right row; flip_h handles left
-	}
-	
-	# Plow animation (row 7)
-	var plow_animations = {
-		"plow_down":  [8, 0, 6, 6.0, false],  
-		"plow_right": [7, 0, 6, 6.0, false], 
-		"plow_up":    [9, 0, 6, 6.0, false],    
-		"plow_left":  [7, 0, 6, 6.0, false]  #flips
-	}
-	
-	# Watering animations (rows 10-12)
-	# Row 10: water down, Row 11: water right, Row 12: water up
-	var water_animations = {
-		"water_down":  [11, 0, 6, 6.0, false],   
-		"water_right": [10, 0, 6, 6.0, false],  
-		"water_up":    [12, 0, 6, 6.0, false],     
-		"water_left":  [10, 0, 6, 6.0, false]    #flipped
-	}
-	
-	# Create walk animations
-	for anim_name in walk_animations:
-		var spec = walk_animations[anim_name]
-		_add_anim(sprite_frames, sprite_sheet, anim_name, spec[0], spec[1], spec[2], spec[3], spec[4])
 		
+	var SHEETS := {
+		# WALK (source sheets)
+		"walk_up":         preload("res://assets/sprites/walk_north.png"),
+		"walk_down":       preload("res://assets/sprites/walk_south.png"),
+		"walk_right":      preload("res://assets/sprites/walk_west.png"),
+		"walk_left":       preload("res://assets/sprites/walk_west.png"),
+		"walk_up_left":    preload("res://assets/sprites/walk_northwest.png"),
+		"walk_up_right":   preload("res://assets/sprites/walk_northwest.png"),
+		"walk_down_left":  preload("res://assets/sprites/walk_southwest.png"),
+		"walk_down_right": preload("res://assets/sprites/walk_southwest.png"),
+		#TODO: Add idle anim!
+	}
 	
-	# Create idle animations (single frame)
-	for anim_name in idle_animations:
-		var spec = idle_animations[anim_name]
-		_add_anim(sprite_frames, sprite_sheet, anim_name, spec[0], spec[1], spec[2], spec[3], spec[4])
+	var WALK_FPS := 8.0
+	var WALK_FRAMES := 8
+	var WALK_SHOULD_LOOP := true
 	
-	# Create plow animations (non-looping action)
-	for anim_name in plow_animations:
-		var spec = plow_animations[anim_name]
-		_add_anim(sprite_frames, sprite_sheet, anim_name, spec[0], spec[1], spec[2], spec[3], spec[4])
+	for anim_name in SHEETS.keys():
+		var sheet: Texture2D = SHEETS[anim_name]
+		if sheet == null:
+			push_warning("Missing sheet for anim '%s'" % anim_name)
+			continue
+		
+		_add_anim(sprite_frames, sheet, anim_name, WALK_FRAMES, WALK_FPS, WALK_SHOULD_LOOP)
 	
-	# Create watering animations (non-looping action)
-	for anim_name in water_animations:
-		var spec = water_animations[anim_name]
-		_add_anim(sprite_frames, sprite_sheet, anim_name, spec[0], spec[1], spec[2], spec[3], spec[4])
+	# Placeholder idles from walk frame 0 (8 directions)
+	_make_idle_from_walk(sprite_frames, "idle_down", "walk_down")
+	_make_idle_from_walk(sprite_frames, "idle_up", "walk_up")
+	_make_idle_from_walk(sprite_frames, "idle_left", "walk_left")
+	_make_idle_from_walk(sprite_frames, "idle_right", "walk_right")
+
+	_make_idle_from_walk(sprite_frames, "idle_up_left", "walk_up_left")
+	_make_idle_from_walk(sprite_frames, "idle_up_right", "walk_up_right")
+	_make_idle_from_walk(sprite_frames, "idle_down_left", "walk_down_left")
+	_make_idle_from_walk(sprite_frames, "idle_down_right", "walk_down_right")
 	
 	animated_sprite.sprite_frames = sprite_frames
 
@@ -326,23 +323,28 @@ func _get_current_surface() -> String:
 	#
 	# return "grass"
 
+func _dir_from_input(v: Vector2) -> String:
+	var x := v.x
+	var y := v.y
+	
+	if x == 0 and y == 0:
+		return current_direction
+	
+	if x < 0 and y < 0:
+		return "up_left"
+	if x > 0 and y < 0:
+		return "up_right"
+	if x < 0 and y > 0:
+		return "down_left"
+	if x > 0 and y > 0:
+		return "down_right"
+	
+	if abs(x) > abs(y):
+		return "right" if x > 0 else "left"
+	else:
+		return "down" if y > 0 else "up"
+
 func _physics_process(delta: float) -> void:
-	# Don't process movement while performing actions
-	if is_plowing or is_watering:
-		velocity = Vector2.ZERO
-		move_and_slide()
-		return
-	
-	# Check for plow action (Space to plow)
-	if Input.is_action_just_pressed("plow"):
-		_start_plow()
-		return
-	
-	# Check for water action (press W to water)
-	if Input.is_action_just_pressed("water"):
-		_start_water()
-		return
-	
 	# Get input direction
 	var input_vector := Vector2.ZERO
 	input_vector.x = Input.get_axis("ui_left", "ui_right")
@@ -357,17 +359,7 @@ func _physics_process(delta: float) -> void:
 		velocity = velocity.move_toward(input_vector * current_speed, acceleration * delta)
 		is_moving = true
 		
-		# Determine direction based on input (prioritize horizontal)
-		if abs(input_vector.x) > abs(input_vector.y):
-			if input_vector.x > 0:
-				current_direction = "right"
-			else:
-				current_direction = "left"
-		else:
-			if input_vector.y > 0:
-				current_direction = "down"
-			else:
-				current_direction = "up"
+		current_direction = _dir_from_input(input_vector)
 	else:
 		# Apply friction when no input
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
@@ -378,18 +370,6 @@ func _physics_process(delta: float) -> void:
 	_process_footsteps(delta)
 	#for preview in placement zones
 	_update_zone_player_feedback()
-
-func _start_plow() -> void:
-	is_plowing = true
-	var anim_name = "plow_" + current_direction
-	animated_sprite.flip_h = (current_direction == "left")
-	animated_sprite.play(anim_name)
-
-func _start_water() -> void:
-	is_watering = true
-	var anim_name = "water_" + current_direction
-	animated_sprite.flip_h = (current_direction == "left")
-	animated_sprite.play(anim_name)
 
 func _on_animation_finished() -> void:
 	# When action animation finishes, return to normal state
@@ -407,9 +387,10 @@ func _update_animation() -> void:
 		anim_name = "walk_" + current_direction
 	else:
 		anim_name = "idle_" + current_direction
-
-	animated_sprite.flip_h = (current_direction == "left")
 	
-	# Only change animation if different from current
+	animated_sprite.flip_h = _should_flip_for_direction(current_direction)
 	if animated_sprite.animation != anim_name:
 		animated_sprite.play(anim_name)
+
+func _should_flip_for_direction(dir: String) -> bool:
+	return dir.ends_with("right")
