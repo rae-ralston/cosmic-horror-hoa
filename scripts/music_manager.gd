@@ -3,24 +3,36 @@ extends Node
 # Music manager singleton that handles phase-based music playback
 # Integrates with PhaseManager to play appropriate music for each phase
 
-# Audio player for music
+# Audio player for continuous music
 @onready var music_player: AudioStreamPlayer = AudioStreamPlayer.new()
+
+# Audio player for one-shot sound effects (warning tick-tock)
+@onready var sfx_player: AudioStreamPlayer = AudioStreamPlayer.new()
 
 # Music streams for each phase
 var normal_music: AudioStream
-var warning_music: AudioStream  # TODO: Add when asset is available
-var danger_music: AudioStream   # TODO: Add when asset is available
+var warning_sfx: AudioStream  # One-shot tick-tock sound that plays over normal music
+var danger_music: AudioStream
 
 func _ready() -> void:
-	# Add the AudioStreamPlayer as a child
+	# Add the AudioStreamPlayers as children
 	add_child(music_player)
+	add_child(sfx_player)
 
 	# Load music assets
 	normal_music = load("res://assets/music/main_theme_normal.ogg")
+	warning_sfx = load("res://assets/music/warning_tick_tock.wav")
+	danger_music = load("res://assets/music/danger_guitar_v1.ogg")
 
-	# Configure the audio stream for looping
+	# Configure the normal music for looping
 	if normal_music is AudioStreamOggVorbis:
 		normal_music.loop = true
+
+	# Configure the danger music for looping
+	if danger_music is AudioStreamOggVorbis:
+		danger_music.loop = true
+
+	# Warning SFX should not loop (one-shot sound)
 
 	# Connect to PhaseManager signals
 	if PhaseManager:
@@ -37,15 +49,19 @@ func _on_normal_phase() -> void:
 
 func _on_warning_phase() -> void:
 	"""Called when Warning phase begins"""
-	# TODO: Implement warning music when asset is available
-	# For now, continue playing normal music
-	pass
+	# Keep playing normal music, but play tick-tock SFX over it
+	if warning_sfx:
+		sfx_player.stream = warning_sfx
+		sfx_player.play()
 
 func _on_danger_phase() -> void:
 	"""Called when Danger phase begins"""
-	# TODO: Implement danger music when asset is available
-	# For now, continue playing normal music
-	pass
+	# Stop the warning tick-tock if it's still playing
+	if sfx_player.playing and sfx_player.stream == warning_sfx:
+		sfx_player.stop()
+
+	# Switch to danger music
+	_play_music(danger_music)
 
 func _play_music(stream: AudioStream) -> void:
 	"""Switches to the specified music stream"""
