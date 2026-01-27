@@ -15,6 +15,13 @@
 3. **Play the game**
    - Press **F5** (or click the play button ▶ in the top-right corner)
 
+## Controls
+
+- **Arrow Keys** - Move your character
+- **E** - Pick up / Drop items
+- **Space** or **D** - Dig action
+- **W** - Water action
+
 ## Resources:
 
 - [project kanban board](https://github.com/users/rae-ralston/projects/3/settings)
