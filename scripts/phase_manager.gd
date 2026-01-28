@@ -8,14 +8,17 @@ signal warning_started()
 signal danger_started()
 signal normal_resumed()
 
-@export var normal_duration: float = 90.0
-@export var warning_duration: float = 15.0
-@export var danger_duration: float = 25.0
+# Music timing: 120 BPM = 2 seconds per bar (4 beats per bar)
+const SECONDS_PER_BAR = 2.0
+
+@export var normal_bars := 44
+@export var warning_bars := 8
+@export var danger_bars := 12
 
 @export var test_mode: bool = true
-@export var test_normal_duration: float = 10.0
-@export var test_warning_duration: float = 5.0
-@export var test_danger_duration: float = 5.0
+@export var test_normal_bars := 5
+@export var test_warning_bars := 2
+@export var test_danger_bars := 3
 
 @export var sabotages_enabled := true
 @export var sabotage_on_danger_start := true
@@ -23,18 +26,27 @@ signal normal_resumed()
 var current_phase: Phase = Phase.NORMAL
 var phase_timer: Timer = null
 
+# Actual durations in seconds (calculated from bars)
+var normal_duration: float
+var warning_duration: float
+var danger_duration: float
+
 func _ready() -> void:
-	# Use test durations if test mode is enabled
+	# Calculate durations from bars (use test bars if test mode is enabled)
 	if test_mode:
-		normal_duration = test_normal_duration
-		warning_duration = test_warning_duration
-		danger_duration = test_danger_duration
+		normal_duration = test_normal_bars * SECONDS_PER_BAR
+		warning_duration = test_warning_bars * SECONDS_PER_BAR
+		danger_duration = test_danger_bars * SECONDS_PER_BAR
+	else:
+		normal_duration = normal_bars * SECONDS_PER_BAR
+		warning_duration = warning_bars * SECONDS_PER_BAR
+		danger_duration = danger_bars * SECONDS_PER_BAR
 
 	_setup_timer()
-	
+
 	if not danger_started.is_connected(_on_danger_started):
 		danger_started.connect(_on_danger_started)
-	
+
 	_start_phase(Phase.NORMAL)
 
 func _on_danger_started() -> void:
