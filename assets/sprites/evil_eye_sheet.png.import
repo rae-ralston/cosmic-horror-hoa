@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3y327fsprj46"
-path="res://.godot/imported/the-eye.jpg-a86a0248eae009cedac7fa986a3c8467.ctex"
+uid="uid://byx30lok2xo3u"
+path="res://.godot/imported/evil_eye_sheet.png-722060616687a25954b67d853a47f788.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/the-eye.jpg"
-dest_files=["res://.godot/imported/the-eye.jpg-a86a0248eae009cedac7fa986a3c8467.ctex"]
+source_file="res://assets/sprites/evil_eye_sheet.png"
+dest_files=["res://.godot/imported/evil_eye_sheet.png-722060616687a25954b67d853a47f788.ctex"]
 
 [params]
 
