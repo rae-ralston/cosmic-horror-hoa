@@ -5,7 +5,7 @@ signal day_tick(time_left: float)
 signal day_ended(win: bool)
 
 @export var day_length_sec: float = 180.0
-@export var test_mode: bool = false
+@export var test_mode: bool = true
 @export var test_day_length_sec: float = 30.0
 
 var _time_left: float = 0.0

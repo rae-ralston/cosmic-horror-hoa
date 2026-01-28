@@ -1,15 +1,205 @@
-[gd_scene load_steps=11 format=3 uid="uid://bsneu6mo1x44l"]
+[gd_scene load_steps=39 format=3 uid="uid://bsneu6mo1x44l"]
 
 [ext_resource type="Script" uid="uid://bhyrnlv1g4ay5" path="res://scripts/game.gd" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://bc33ln64vga0w" path="res://scripts/inventory_hud.gd" id="2_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://dfxx88ir3r5eg" path="res://scenes/environment.tscn" id="2_yqjtg"]
 [ext_resource type="Script" uid="uid://cil60usxpugy6" path="res://scripts/citations_manager.gd" id="3_lnu2h"]
 [ext_resource type="Texture2D" uid="uid://biabks7tcdo6l" path="res://icon.svg" id="3_vtaks"]
+[ext_resource type="Script" uid="uid://v7bdgn17mkfn" path="res://scenes/danger_overlay.gd" id="4_kvpfn"]
 [ext_resource type="PackedScene" uid="uid://llv2q3dauk28" path="res://scenes/citation_list_ui.tscn" id="4_vtaks"]
+[ext_resource type="Texture2D" uid="uid://byx30lok2xo3u" path="res://assets/sprites/evil_eye_sheet.png" id="5_dinhu"]
 [ext_resource type="PackedScene" uid="uid://j28d6tuyrgp6" path="res://scenes/timer_display.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://mdsr1aaoki0k" path="res://scenes/player.tscn" id="6_player"]
 [ext_resource type="PackedScene" uid="uid://dnrn256j1jnpv" path="res://scenes/placement_zone.tscn" id="9_vtaks"]
 [ext_resource type="PackedScene" uid="uid://dnws8dw5c3xsc" path="res://scenes/item.tscn" id="10_kvpfn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvuet"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(0, 0, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_trtic"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(512, 0, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ir15t"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(1024, 0, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ca42v"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(1536, 0, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rysoc"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(2048, 0, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ssvqc"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(2560, 0, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_264po"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(3072, 0, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1kice"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(3584, 0, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5newe"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(0, 256, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_37s47"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(512, 256, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bt5mj"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(1024, 256, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e1j6l"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(1536, 256, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pl11u"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(2048, 256, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bhx41"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(2560, 256, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qnb83"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(3072, 256, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sww3w"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(3584, 256, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_suyxu"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(0, 512, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sgl2t"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(512, 512, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qouja"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(1024, 512, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wljb1"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(1536, 512, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v2yb1"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(2048, 512, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_js0lu"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(2560, 512, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gxtfn"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(3072, 512, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_twgab"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(3584, 512, 512, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_02fa5"]
+atlas = ExtResource("5_dinhu")
+region = Rect2(0, 768, 512, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nepv3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvuet")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_trtic")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ir15t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ca42v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rysoc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ssvqc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_264po")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1kice")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5newe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_37s47")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bt5mj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e1j6l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pl11u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bhx41")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qnb83")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sww3w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_suyxu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sgl2t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qouja")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wljb1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v2yb1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_js0lu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gxtfn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_twgab")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_02fa5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
+}]
 
 [node name="game" type="Control"]
 layout_mode = 3
@@ -52,16 +242,6 @@ offset_right = 55.0
 offset_bottom = 40.0
 text = "Empty"
 
-[node name="DangerOverlay" type="ColorRect" parent="HUD"]
-modulate = Color(1, 1, 1, 0)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 0, 0, 1)
-
 [node name="DayStatus" type="Control" parent="HUD"]
 layout_mode = 3
 anchors_preset = 0
@@ -73,6 +253,41 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="DangerOverlay" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_kvpfn")
+
+[node name="DangerColor" type="ColorRect" parent="HUD/DangerOverlay"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 1)
+
+[node name="EvilAnchor" type="Control" parent="HUD/DangerOverlay"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="EvilEye" type="AnimatedSprite2D" parent="HUD/DangerOverlay/EvilAnchor"]
+texture_filter = 1
+position = Vector2(561, 254)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_nepv3")
+frame_progress = 0.60641605
 
 [node name="CitationsManager" type="Node" parent="."]
 script = ExtResource("3_lnu2h")

@@ -2,7 +2,7 @@ extends Control
 class_name World
 
 @onready var CitationsManager: Node = $CitationsManager
-@onready var danger_overlay: ColorRect = $HUD/DangerOverlay
+@onready var danger_overlay: ColorRect = $HUD/DangerOverlay/DangerColor
 var day_manager: DayManager = DayManager
 
 var game_over := false
