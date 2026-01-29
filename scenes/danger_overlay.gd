@@ -10,6 +10,8 @@ var _tween: Tween
 
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	$DangerColor.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	danger_color.visible = false
 	_set_color_alpha(0.0)

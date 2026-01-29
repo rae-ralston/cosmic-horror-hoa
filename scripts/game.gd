@@ -77,6 +77,6 @@ func _fade_overlay_out() -> void:
 	
 func _on_day_ended(win: bool) -> void:
 	game_over = true
-	get_tree().paused = true
+	#get_tree().paused = true
 	print("[DAY] ended win=", win)
 	#$EndScreen.show_result(win)

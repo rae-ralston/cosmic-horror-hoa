@@ -187,6 +187,9 @@ func _setup_animations() -> void:
 	animated_sprite.sprite_frames = sprite_frames
 
 func _unhandled_input(event: InputEvent) -> void:
+	if DayManager.is_game_over:
+		return
+	
 	if event.is_action_pressed("interact"):
 		_try_interact()
 
@@ -345,6 +348,11 @@ func _dir_from_input(v: Vector2) -> String:
 		return "down" if y > 0 else "up"
 
 func _physics_process(delta: float) -> void:
+	if DayManager.is_game_over:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return
+	
 	# Get input direction
 	var input_vector := Vector2.ZERO
 	input_vector.x = Input.get_axis("ui_left", "ui_right")

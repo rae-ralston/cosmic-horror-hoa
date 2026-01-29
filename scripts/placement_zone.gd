@@ -5,6 +5,7 @@ class_name PlacementZone
 @export var snap_point_path: NodePath
 @export var preview_sprite_path: NodePath = "PreviewSprite"
 @export var highlight_path: NodePath = "ZoneHighlight"
+@export var zone_id: String = ""
 
 @onready var snap_point: Node2D = get_node_or_null(snap_point_path)
 @onready var preview_sprite: Sprite2D = get_node_or_null(preview_sprite_path)
@@ -16,6 +17,9 @@ var occupied_item_id: String = ""
 var pulse_time := 0.0
 
 func _ready() -> void:
+	# Use node name as zone_id if not explicitly set
+	if zone_id.is_empty():
+		zone_id = name
 	ZoneRegistry.register(self)
 
 func _exit_tree() -> void:
@@ -69,10 +73,10 @@ func can_place(item_id: String) -> bool:
 
 func occupy(item_id: String) -> void:
 	occupied_item_id = item_id
-	emit_signal("occupancy_changed", self)
+	occupancy_changed.emit(self) # if you still want the local signal
+	ZoneRegistry.notify_occupancy_changed(self)
 
 func clear_occupancy() -> void:
-	if occupied_item_id == "":
-		return
 	occupied_item_id = ""
-	emit_signal("occupancy_changed", self)
+	occupancy_changed.emit(self)
+	ZoneRegistry.notify_occupancy_changed(self)

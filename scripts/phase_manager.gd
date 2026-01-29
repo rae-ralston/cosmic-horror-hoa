@@ -86,6 +86,9 @@ func _start_phase(phase: Phase) -> void:
 	phase_timer.start(duration)
 
 func _on_phase_timer_timeout() -> void:
+	if DayManager.is_game_over:
+		return
+	
 	# Cycle to next phase
 	match current_phase:
 		Phase.NORMAL:
@@ -102,3 +105,9 @@ func get_time_remaining() -> float:
 	if phase_timer:
 		return phase_timer.time_left
 	return 0.0
+
+func reset_for_new_run() -> void:
+	current_phase = Phase.NORMAL
+	if phase_timer:
+		phase_timer.stop()
+	_start_phase(Phase.NORMAL)

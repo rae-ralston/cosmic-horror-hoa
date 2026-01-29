@@ -76,32 +76,35 @@ func when_day_starts():
 func _ready() -> void:
 	# wait for scene nodes to register
 	await get_tree().process_frame
+	await get_tree().process_frame
 	
+
 	# Connect to zone occupancy changes for all registered zones
 	for zone_id in ZoneRegistry.by_id:
 		var zone: PlacementZone = ZoneRegistry.by_id[zone_id]
 		if zone and not zone.occupancy_changed.is_connected(_on_zone_occupancy_changed):
 			zone.occupancy_changed.connect(_on_zone_occupancy_changed)
-	
+		if not ZoneRegistry.zone_occupancy_changed.is_connected(_on_zone_occupancy_changed):
+			ZoneRegistry.zone_occupancy_changed.connect(_on_zone_occupancy_changed)
 	evaluate_all()
 
-func _on_zone_occupancy_changed(_zone: PlacementZone) -> void:
+func _on_zone_occupancy_changed(zone: PlacementZone) -> void:
+	print("[CIT] zone changed:", zone.name, " occupied=", zone.occupied_item_id)
 	evaluate_all()
-
 
 func evaluate_all() -> void:
 	var changed := false
-	
+
 	for id in data.keys():
 		var def: Dictionary = data[id]
 		var now_resolved := _is_citation_resolved(def)
-		
+
 		var prev := bool(resolved_citations.get(id, false))
 		if now_resolved != prev:
 			resolved_citations[id] = now_resolved
 			changed = true
 			print("[CIT] %s resolved=%s" % [id, now_resolved])
-		
+
 	if changed:
 		print("[CIT] emitting citations_changed")
 		emit_signal("citations_changed")
@@ -119,6 +122,7 @@ func _is_citation_resolved(def: Dictionary) -> bool:
 	return true
 
 func _eval_condition(cond: Dictionary) -> bool:
+	
 	var type := str(cond.get("type", "")).to_upper()
 	var params: Dictionary = cond.get("params", {})
 	
@@ -200,3 +204,20 @@ func are_all_active_resolved() -> bool:
 		if not bool(resolved_citations.get(id, false)):
 			return false
 	return true
+
+func reset_for_new_run() -> void:
+	print("[CIT] reset_for_new_run")
+
+	active_citations = ["flowerpot_missing"] 
+	resolved_citations.clear()
+	new_citations.clear()
+	reopened_citations.clear()
+
+	emit_signal("citations_changed")
+
+
+func _reconnect_zone_signals() -> void:
+	for zone_id in ZoneRegistry.by_id:
+		var zone: PlacementZone = ZoneRegistry.by_id[zone_id]
+		if zone and not zone.occupancy_changed.is_connected(_on_zone_occupancy_changed):
+			zone.occupancy_changed.connect(_on_zone_occupancy_changed)
