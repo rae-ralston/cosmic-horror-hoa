@@ -10,3 +10,6 @@ func get_item(id: String) -> Item:
 
 func unregister(id: String) -> void:
 	by_id.erase(id)
+
+func reset_for_new_run() -> void:
+	by_id.clear()
