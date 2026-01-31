@@ -1,6 +1,8 @@
 extends Control
 class_name World
 
+const START_LETTER_SCENE := preload("res://scenes/start_letter_ui.tscn")
+
 @onready var CitationsManager: Node = $CitationsManager
 @onready var danger_overlay: ColorRect = $HUD/DangerOverlay/DangerColor
 var day_manager: DayManager = DayManager
@@ -16,9 +18,7 @@ const FADE_DURATION = 0.5
 
 func _ready() -> void:
 	day_manager.day_ended.connect(_on_day_ended)
-	day_manager.start_day()
-	CitationsManager.when_day_starts()
-	
+
 	PhaseManager.phase_changed.connect(_on_phase_changed)
 	PhaseManager.danger_started.connect(_on_danger_started)
 	PhaseManager.normal_resumed.connect(_on_normal_resumed)
@@ -27,6 +27,9 @@ func _ready() -> void:
 	# Initialize overlay as transparent
 	if danger_overlay:
 		danger_overlay.modulate.a = 0.0
+
+	# Show intro letter FIRST, then start day on dismiss
+	show_start_letter()
 
 func _on_phase_changed(_new_phase: int) -> void:
 	pass
@@ -80,3 +83,33 @@ func _on_day_ended(win: bool) -> void:
 	#get_tree().paused = true
 	print("[DAY] ended win=", win)
 	#$EndScreen.show_result(win)
+
+
+var _start_letter_showing := false
+
+func show_start_letter() -> void:
+	if _start_letter_showing:
+		return
+	
+	# If one already exists under HUD (extra safety)
+	if $HUD.get_node_or_null("StartLetterUI") != null:
+		return
+	
+	_start_letter_showing = true
+	
+	var ui := START_LETTER_SCENE.instantiate()
+	ui.name = "StartLetterUI"
+	$HUD.add_child(ui)
+	
+	ui.dismissed.connect(_on_start_letter_dismissed)
+	
+	get_tree().paused = true
+	ui.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+
+func _on_start_letter_dismissed() -> void:
+	_start_letter_showing = false
+	get_tree().paused = false
+	
+	day_manager.start_day()
+	
+	CitationsManager.when_day_starts()
