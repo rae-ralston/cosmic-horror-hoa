@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wci6nvcm4uy"
-path="res://.godot/imported/Rug.png-911f46611c9980c6930001bf446e7427.ctex"
+uid="uid://dk0k42n8m0ssc"
+path="res://.godot/imported/Rug zone.png-cf867d28c3894b1e97787f1c90d3fd3d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/Rug.png"
-dest_files=["res://.godot/imported/Rug.png-911f46611c9980c6930001bf446e7427.ctex"]
+source_file="res://assets/sprites/Rug zone.png"
+dest_files=["res://.godot/imported/Rug zone.png-cf867d28c3894b1e97787f1c90d3fd3d.ctex"]
 
 [params]
 

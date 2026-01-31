@@ -2,6 +2,8 @@ extends Area2D
 class_name Item
 
 @export var item_id: String = "": set = set_item_id
+@export var world_texture_override: Texture2D
+@export var item_z: int = 2
 
 func set_item_id(value: String) -> void:
 	item_id = value
@@ -38,13 +40,17 @@ func _ready() -> void:
 	_apply_visuals()
 
 func _apply_visuals() -> void:
-	var item_sprite = get_node_or_null("ItemSprite")
+	var item_sprite := get_node_or_null("ItemSprite") as Sprite2D
 	if not item_sprite:
 		return
-	
-	var texture := Items.get_world_texture(_normalize_id(item_id))
+
+	var texture: Texture2D = world_texture_override
+	if texture == null:
+		texture = Items.get_world_texture(_normalize_id(item_id))
+
 	if texture != null:
 		item_sprite.texture = texture
-		item_sprite.region_enabled = false 
+		item_sprite.region_enabled = false
+		item_sprite.z_index = item_z
 	else:
-		push_warning("Item '%s' has no world texture" % item_id)
+		push_warning("Item '%s' has no world texture (and no override)" % item_id)

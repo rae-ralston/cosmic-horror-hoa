@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bllxxkaqogxh6"]
+[gd_scene load_steps=3 format=3 uid="uid://bllxxkaqogxh6"]
 
 [ext_resource type="Script" uid="uid://c02sx4mfrncw4" path="res://scripts/start_ui.gd" id="1_31gsc"]
 [ext_resource type="Texture2D" uid="uid://da1qf7k0406i4" path="res://assets/sprites/the-suburbs.png" id="1_jef12"]
-[ext_resource type="FontFile" uid="uid://lqkdp0ocibaw" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_yubl7"]
-[ext_resource type="FontFile" uid="uid://d2kd3gmrg66o1" path="res://assets/fonts/PixelOperator8.ttf" id="3_31gsc"]
+[ext_resource type="FontFile" uid="uid://bdh6ooyj635fe" path="res://assets/fonts/CutiveMono-Regular.ttf" id="2_cutivemono"]
 
 [node name="StartUi" type="Control"]
 layout_mode = 3
@@ -37,7 +36,7 @@ offset_top = 18.0
 offset_right = 555.5
 offset_bottom = 89.0
 grow_horizontal = 2
-theme_override_fonts/font = ExtResource("2_yubl7")
+theme_override_fonts/font = ExtResource("2_cutivemono")
 theme_override_font_sizes/font_size = 70
 text = "Cosmic Horror HOA"
 
@@ -61,14 +60,14 @@ size_flags_vertical = 8
 [node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
-theme_override_fonts/font = ExtResource("3_31gsc")
+theme_override_fonts/font = ExtResource("2_cutivemono")
 theme_override_font_sizes/font_size = 40
 text = "Start "
 
 [node name="SettingsButton" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
-theme_override_fonts/font = ExtResource("3_31gsc")
+theme_override_fonts/font = ExtResource("2_cutivemono")
 theme_override_font_sizes/font_size = 40
 text = "Settings
 "
@@ -76,7 +75,7 @@ text = "Settings
 [node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
-theme_override_fonts/font = ExtResource("3_31gsc")
+theme_override_fonts/font = ExtResource("2_cutivemono")
 theme_override_font_sizes/font_size = 40
 text = "Quit "
 

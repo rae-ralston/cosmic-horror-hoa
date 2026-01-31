@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bbu08k65wfgpg" path="res://scripts/settings_ui.gd" id="1_dt67o"]
 [ext_resource type="Texture2D" uid="uid://da1qf7k0406i4" path="res://assets/sprites/the-suburbs.png" id="1_n4p34"]
-[ext_resource type="FontFile" uid="uid://d2kd3gmrg66o1" path="res://assets/fonts/PixelOperator8.ttf" id="2_dt67o"]
+[ext_resource type="FontFile" uid="uid://bdh6ooyj635fe" path="res://assets/fonts/CutiveMono-Regular.ttf" id="2_dt67o"]
 
 [node name="SettingsUi" type="Control"]
 layout_mode = 3

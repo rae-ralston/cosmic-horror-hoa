@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bq8x7m2oap4k1"]
+[gd_scene load_steps=2 format=3 uid="uid://bq8x7m2oap4k1"]
 
 [ext_resource type="Script" uid="uid://clnctuxn64jq5" path="res://scripts/citation_row.gd" id="1_citation_row"]
-[ext_resource type="FontFile" uid="uid://d2kd3gmrg66o1" path="res://assets/fonts/PixelOperator8.ttf" id="2_font"]
-[ext_resource type="FontFile" uid="uid://2tb4sj2hm011" path="res://assets/fonts/Caveat-VariableFont_wght.ttf" id="3_vxjjr"]
+[ext_resource type="FontFile" uid="uid://bdh6ooyj635fe" path="res://assets/fonts/CutiveMono-Regular.ttf" id="2_font"]
 
 [node name="CitationRow" type="HBoxContainer"]
 script = ExtResource("1_citation_row")
@@ -17,12 +16,15 @@ text = "[ ]"
 
 [node name="RightColumn" type="VBoxContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Title" type="Label" parent="RightColumn"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("3_vxjjr")
+custom_minimum_size = Vector2(200, 0)
+theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 21
+autowrap_mode = 3
 text = "Title"
 
 [node name="Tag" type="Label" parent="RightColumn"]
