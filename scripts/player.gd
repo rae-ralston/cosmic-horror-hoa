@@ -34,6 +34,11 @@ var current_highlight_zone: PlacementZone = null
 var footstep_timer: float = 0.0
 const WALK_STEP_INTERVAL: float = 0.27  # seconds between steps
 
+# SFX audio
+@onready var sfx_player: AudioStreamPlayer2D = $SFXPlayer
+const SFX_PICKUP = preload("res://assets/audio/sfx/pick-up.wav")
+const SFX_PUTDOWN = preload("res://assets/audio/sfx/put-down.wav")
+
 func _ready() -> void:
 	#player interact area for picking up items
 	interact_area.area_entered.connect(_on_interact_area_entered)
@@ -56,6 +61,12 @@ func _ready() -> void:
 	
 	# Connect animation finished signal for actions like plow
 	animated_sprite.animation_finished.connect(_on_animation_finished)
+
+	# Setup SFX player
+	if not has_node("SFXPlayer"):
+		sfx_player = AudioStreamPlayer2D.new()
+		sfx_player.name = "SFXPlayer"
+		add_child(sfx_player)
 
 func _on_interact_area_entered(area: Area2D) -> void:
 	if area is Item:
@@ -219,6 +230,11 @@ func _try_interact() -> void:
 		
 		current_preview_zone = null
 		inventory.drop(drop_pos, world)
+
+		# Play putdown sound
+		sfx_player.stream = SFX_PUTDOWN
+		sfx_player.play()
+
 		_update_zone_player_feedback()
 		return
 
@@ -228,6 +244,10 @@ func _try_interact() -> void:
 		return
 
 	if inventory.pickup(item):
+		# Play pickup sound
+		sfx_player.stream = SFX_PICKUP
+		sfx_player.play()
+
 		item.set_pickup_highlight(false)
 		nearby_items.erase(item)
 
