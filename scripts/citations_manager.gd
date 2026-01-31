@@ -12,6 +12,7 @@ var data = load_json("res://data/citations_by_id.json")
 # SFX audio
 var sfx_player: AudioStreamPlayer
 const SFX_COMPLETED = preload("res://assets/sound/completed-task.wav")
+const SFX_CITATION_ADDED = preload("res://assets/sound/citation-added.wav")
 
 func load_json(path: String) -> Variant:
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -88,6 +89,10 @@ func _ready() -> void:
 	sfx_player.bus = &"Master"
 	add_child(sfx_player)
 
+	# Connect to PhaseManager danger_started signal for citation-added sound
+	if not PhaseManager.danger_started.is_connected(_on_danger_started):
+		PhaseManager.danger_started.connect(_on_danger_started)
+
 	# Connect to zone occupancy changes for all registered zones
 	for zone_id in ZoneRegistry.by_id:
 		var zone: PlacementZone = ZoneRegistry.by_id[zone_id]
@@ -100,6 +105,13 @@ func _ready() -> void:
 func _on_zone_occupancy_changed(zone: PlacementZone) -> void:
 	print("[CIT] zone changed:", zone.name, " occupied=", zone.occupied_item_id)
 	evaluate_all()
+
+func _on_danger_started() -> void:
+	# Play citation-added sound once at start of danger phase
+	if sfx_player:
+		sfx_player.stream = SFX_CITATION_ADDED
+		sfx_player.play()
+	print("[CIT] danger_started -> playing citation-added sound")
 
 func evaluate_all() -> void:
 	var changed := false
