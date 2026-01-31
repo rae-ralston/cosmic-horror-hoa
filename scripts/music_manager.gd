@@ -3,6 +3,9 @@ extends Node
 # Music manager singleton that handles phase-based music playback
 # Integrates with PhaseManager to play appropriate music for each phase
 
+# Testing toggle - disable music for SFX testing
+@export var music_enabled: bool = true
+
 # Audio player for continuous music
 @onready var music_player: AudioStreamPlayer = AudioStreamPlayer.new()
 
@@ -43,6 +46,21 @@ func _ready() -> void:
 	# Start with normal music
 	_play_music(normal_music)
 
+func _input(event: InputEvent) -> void:
+	"""Handle input for music toggle (M key for testing)"""
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_M:
+			music_enabled = !music_enabled
+			if music_enabled:
+				# Resume music based on current phase
+				if PhaseManager.current_phase == PhaseManager.Phase.NORMAL:
+					_play_music(normal_music)
+				elif PhaseManager.current_phase == PhaseManager.Phase.DANGER:
+					_play_music(danger_music)
+			else:
+				# Stop music immediately
+				music_player.stop()
+
 func _on_normal_phase() -> void:
 	"""Called when Normal phase begins"""
 	_play_music(normal_music)
@@ -66,6 +84,11 @@ func _on_danger_phase() -> void:
 func _play_music(stream: AudioStream) -> void:
 	"""Switches to the specified music stream"""
 	if not stream:
+		return
+
+	# Check if music is disabled for testing
+	if not music_enabled:
+		music_player.stop()
 		return
 
 	# Only change if it's different music
