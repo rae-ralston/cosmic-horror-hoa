@@ -36,8 +36,8 @@ const WALK_STEP_INTERVAL: float = 0.27  # seconds between steps
 
 # SFX audio
 var sfx_player: AudioStreamPlayer
-const SFX_PICKUP = preload("res://assets/audio/sfx/pick-up.wav")
-const SFX_PUTDOWN = preload("res://assets/audio/sfx/put-down.wav")
+const SFX_PICKUP = preload("res://assets/sound/pick-up.wav")
+const SFX_PUTDOWN = preload("res://assets/sound/put-down.wav")
 
 func _ready() -> void:
 	#player interact area for picking up items
