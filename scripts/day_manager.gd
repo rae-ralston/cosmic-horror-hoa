@@ -5,7 +5,7 @@ signal day_tick(time_left: float)
 signal day_ended(win: bool)
 
 @export var day_length_sec: float = 180.0
-@export var test_mode: bool = false
+@export var test_mode: bool = true
 @export var test_day_length_sec: float = 30.0
 var is_game_over: bool = false
 
@@ -23,7 +23,7 @@ func _ready() -> void:
 	add_child(_timer)
 
 func start_day() -> void:
-	print("[DAY] start_day is_game_over=", is_game_over)
+	print("[DAY] start_day paused=", get_tree().paused)
 	is_game_over = false
 	_time_left = day_length_sec
 	_timer.start()
@@ -49,6 +49,7 @@ func _on_tick() -> void:
 	day_tick.emit(_time_left)
 
 	if _time_left <= 0:
+		print("[DAY] timer timeout -> emitting day_ended")
 		_timer.stop()
 		is_game_over = true
 		var win := CitationsManager.are_all_active_resolved()

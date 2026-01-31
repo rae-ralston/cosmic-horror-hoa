@@ -4,6 +4,7 @@ class_name World
 const START_LETTER_SCENE := preload("res://scenes/start_letter_ui.tscn")
 
 @onready var CitationsManager: Node = $CitationsManager
+@onready var Player: Node = $GameView/GameViewport/World/player
 @onready var danger_overlay: ColorRect = $HUD/DangerOverlay/DangerColor
 var day_manager: DayManager = DayManager
 
@@ -91,7 +92,6 @@ func show_start_letter() -> void:
 	if _start_letter_showing:
 		return
 	
-	# If one already exists under HUD (extra safety)
 	if $HUD.get_node_or_null("StartLetterUI") != null:
 		return
 	
@@ -103,13 +103,15 @@ func show_start_letter() -> void:
 	
 	ui.dismissed.connect(_on_start_letter_dismissed)
 	
-	get_tree().paused = true
-	ui.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+	Player.set_process(false)
+	Player.set_physics_process(false)
 
 func _on_start_letter_dismissed() -> void:
 	_start_letter_showing = false
-	get_tree().paused = false
 	
+	await get_tree().process_frame
+	
+	Player.set_process(true)
+	Player.set_physics_process(true)
 	day_manager.start_day()
-	
 	CitationsManager.when_day_starts()

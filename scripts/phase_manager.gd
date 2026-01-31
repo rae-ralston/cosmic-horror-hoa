@@ -15,7 +15,7 @@ const SECONDS_PER_BAR = 2.0
 @export var warning_bars := 8
 @export var danger_bars := 12
 
-@export var test_mode: bool = false
+@export var test_mode: bool = true
 @export var test_normal_bars := 5
 @export var test_warning_bars := 2
 @export var test_danger_bars := 3
