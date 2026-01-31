@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://bsneu6mo1x44l"]
+[gd_scene load_steps=41 format=3 uid="uid://bsneu6mo1x44l"]
 
 [ext_resource type="Script" uid="uid://bhyrnlv1g4ay5" path="res://scripts/game.gd" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://bc33ln64vga0w" path="res://scripts/inventory_hud.gd" id="2_0tnpc"]
@@ -8,9 +8,10 @@
 [ext_resource type="Script" uid="uid://v7bdgn17mkfn" path="res://scenes/danger_overlay.gd" id="4_kvpfn"]
 [ext_resource type="PackedScene" uid="uid://llv2q3dauk28" path="res://scenes/citation_list_ui.tscn" id="4_vtaks"]
 [ext_resource type="Texture2D" uid="uid://byx30lok2xo3u" path="res://assets/sprites/evil_eye_sheet.png" id="5_dinhu"]
-[ext_resource type="PackedScene" uid="uid://cwdx370arffpf" path="res://scenes/EndScreenUI.tscn" id="5_endui"]
+[ext_resource type="PackedScene" uid="uid://b0tgcheqkftmo" path="res://scenes/EndScreenUI.tscn" id="5_endui"]
 [ext_resource type="PackedScene" uid="uid://j28d6tuyrgp6" path="res://scenes/timer_display.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://mdsr1aaoki0k" path="res://scenes/player.tscn" id="6_player"]
+[ext_resource type="PackedScene" uid="uid://dwnxilxpjb8yq" path="res://scenes/start_letter_ui.tscn" id="7_trtic"]
 [ext_resource type="PackedScene" uid="uid://dnrn256j1jnpv" path="res://scenes/placement_zone.tscn" id="9_vtaks"]
 [ext_resource type="PackedScene" uid="uid://dnws8dw5c3xsc" path="res://scenes/item.tscn" id="10_kvpfn"]
 
@@ -252,6 +253,7 @@ offset_bottom = 40.0
 [node name="EndScreenUi" parent="HUD" instance=ExtResource("5_endui")]
 
 [node name="DangerOverlay" type="Control" parent="HUD"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -285,6 +287,8 @@ position = Vector2(561, 254)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_nepv3")
 frame_progress = 0.60641605
+
+[node name="StartLetterUI" parent="HUD" instance=ExtResource("7_trtic")]
 
 [node name="CitationsManager" type="Node" parent="."]
 script = ExtResource("3_lnu2h")

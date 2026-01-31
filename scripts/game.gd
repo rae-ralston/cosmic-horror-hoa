@@ -1,7 +1,10 @@
 extends Control
 class_name World
 
+const START_LETTER_SCENE := preload("res://scenes/start_letter_ui.tscn")
+
 @onready var CitationsManager: Node = $CitationsManager
+@onready var Player: Node = $GameView/GameViewport/World/player
 @onready var danger_overlay: ColorRect = $HUD/DangerOverlay/DangerColor
 var day_manager: DayManager = DayManager
 
@@ -16,9 +19,7 @@ const FADE_DURATION = 0.5
 
 func _ready() -> void:
 	day_manager.day_ended.connect(_on_day_ended)
-	day_manager.start_day()
-	CitationsManager.when_day_starts()
-	
+
 	PhaseManager.phase_changed.connect(_on_phase_changed)
 	PhaseManager.danger_started.connect(_on_danger_started)
 	PhaseManager.normal_resumed.connect(_on_normal_resumed)
@@ -27,6 +28,9 @@ func _ready() -> void:
 	# Initialize overlay as transparent
 	if danger_overlay:
 		danger_overlay.modulate.a = 0.0
+
+	# Show intro letter FIRST, then start day on dismiss
+	show_start_letter()
 
 func _on_phase_changed(_new_phase: int) -> void:
 	pass
@@ -77,6 +81,39 @@ func _fade_overlay_out() -> void:
 	
 func _on_day_ended(win: bool) -> void:
 	game_over = true
-	#get_tree().paused = true
 	print("[DAY] ended win=", win)
 	#$EndScreen.show_result(win)
+
+
+var _start_letter_showing := false
+
+func show_start_letter() -> void:
+	if _start_letter_showing:
+		return
+
+	_start_letter_showing = true
+
+	var ui := $HUD.get_node_or_null("StartLetterUI")
+	if ui == null:
+		ui = START_LETTER_SCENE.instantiate()
+		ui.name = "StartLetterUI"
+		$HUD.add_child(ui)
+
+	# Always ensure connection exists
+	if not ui.dismissed.is_connected(_on_start_letter_dismissed):
+		ui.dismissed.connect(_on_start_letter_dismissed)
+
+	Player.set_process(false)
+	Player.set_physics_process(false)
+
+	print("[WORLD] start letter active. connected=", ui.dismissed.is_connected(_on_start_letter_dismissed))
+
+func _on_start_letter_dismissed() -> void:
+	_start_letter_showing = false
+	call_deferred("_begin_run")
+
+func _begin_run() -> void:
+	Player.set_process(true)
+	Player.set_physics_process(true)
+	day_manager.start_day()
+	CitationsManager.when_day_starts()
