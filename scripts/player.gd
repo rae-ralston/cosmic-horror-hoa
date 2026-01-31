@@ -61,11 +61,13 @@ func _on_interact_area_entered(area: Area2D) -> void:
 	if area is Item:
 		var item := area as Item
 		nearby_items.append(item)
+		item.set_pickup_highlight(true)
 
 func _on_interact_area_exited(area: Area2D) -> void:
 	if area is Item:
-		var item:= area as Item
+		var item := area as Item
 		nearby_items.erase(item)
+		item.set_pickup_highlight(false)
 
 func _on_placement_zone_entered(area: Area2D) -> void:
 	if area is PlacementZone:
@@ -226,6 +228,7 @@ func _try_interact() -> void:
 		return
 
 	if inventory.pickup(item):
+		item.set_pickup_highlight(false)
 		nearby_items.erase(item)
 
 		var placed_zone_path = item.state.get("placed_zone", null)

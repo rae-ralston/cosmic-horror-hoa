@@ -5,6 +5,9 @@ class_name Item
 @export var world_texture_override: Texture2D
 @export var item_z: int = 2
 
+var _can_pickup: bool = false
+var _pulse_t: float = 0.0
+
 func set_item_id(value: String) -> void:
 	item_id = value
 	if is_node_ready():
@@ -39,6 +42,21 @@ func _ready() -> void:
 	
 	_apply_visuals()
 
+func _process(delta: float) -> void:
+	if not _can_pickup:
+		return
+
+	var s := get_node_or_null("ItemSprite") as Sprite2D
+	if not s:
+		return
+
+	_pulse_t += delta
+	var bump := 1.0 + 0.06 * (0.5 + 0.5 * sin(_pulse_t * 6.0))  # subtle
+	s.scale = Vector2(bump, bump)
+
+	# Slight brighten (optional)
+	s.modulate = Color(1.0, 1.0, 1.0, 1.0)
+
 func _apply_visuals() -> void:
 	var item_sprite := get_node_or_null("ItemSprite") as Sprite2D
 	if not item_sprite:
@@ -54,3 +72,11 @@ func _apply_visuals() -> void:
 		item_sprite.z_index = item_z
 	else:
 		push_warning("Item '%s' has no world texture (and no override)" % item_id)
+
+func set_pickup_highlight(on: bool) -> void:
+	_can_pickup = on
+	_pulse_t = 0.0
+	var s := get_node_or_null("ItemSprite") as Sprite2D
+	if s:
+		s.modulate = Color(1.1,1.1,1.1,1)  # reset
+		s.scale = Vector2.ONE

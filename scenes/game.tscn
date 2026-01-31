@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://bsneu6mo1x44l"]
+[gd_scene load_steps=40 format=3 uid="uid://bsneu6mo1x44l"]
 
 [ext_resource type="Script" uid="uid://bhyrnlv1g4ay5" path="res://scripts/game.gd" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://bc33ln64vga0w" path="res://scripts/inventory_hud.gd" id="2_0tnpc"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://j28d6tuyrgp6" path="res://scenes/timer_display.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://mdsr1aaoki0k" path="res://scenes/player.tscn" id="6_player"]
 [ext_resource type="PackedScene" uid="uid://dwnxilxpjb8yq" path="res://scenes/start_letter_ui.tscn" id="7_trtic"]
+[ext_resource type="PackedScene" uid="uid://b2eqcsxi2or4p" path="res://scenes/citations_overlay.tscn" id="11_kvuet"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kvuet"]
 atlas = ExtResource("5_dinhu")
@@ -251,7 +252,6 @@ offset_bottom = 40.0
 [node name="EndScreenUi" parent="HUD" instance=ExtResource("5_endui")]
 
 [node name="DangerOverlay" type="Control" parent="HUD"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -286,6 +286,13 @@ scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_nepv3")
 frame_progress = 0.60641605
 
+[node name="InteractPrompt" type="Label" parent="HUD"]
+offset_left = 45.0
+offset_top = 534.0
+offset_right = 307.0
+offset_bottom = 557.0
+text = "Press E to pick up/put down items"
+
 [node name="StartLetterUI" parent="HUD" instance=ExtResource("7_trtic")]
 
 [node name="CitationsManager" type="Node" parent="."]
@@ -301,6 +308,9 @@ anchor_left = 1.0
 anchor_bottom = 0.0
 grow_horizontal = 0
 grow_vertical = 1
+
+[node name="CitationsOverlay" parent="CitationsManager/CitationsOverlayCanvas" instance=ExtResource("11_kvuet")]
+visible = false
 
 [node name="GameView" type="SubViewportContainer" parent="."]
 layout_mode = 0
