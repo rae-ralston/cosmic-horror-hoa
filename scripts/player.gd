@@ -35,7 +35,7 @@ var footstep_timer: float = 0.0
 const WALK_STEP_INTERVAL: float = 0.27  # seconds between steps
 
 # SFX audio
-@onready var sfx_player: AudioStreamPlayer2D = $SFXPlayer
+var sfx_player: AudioStreamPlayer
 const SFX_PICKUP = preload("res://assets/audio/sfx/pick-up.wav")
 const SFX_PUTDOWN = preload("res://assets/audio/sfx/put-down.wav")
 
@@ -43,30 +43,30 @@ func _ready() -> void:
 	#player interact area for picking up items
 	interact_area.area_entered.connect(_on_interact_area_entered)
 	interact_area.area_exited.connect(_on_interact_area_exited)
-	
+
 	#placement zones for solving puzzles
 	placement_area.area_entered.connect(_on_placement_zone_entered)
 	placement_area.area_exited.connect(_on_placement_zone_exited)
-	
+
 	# Setup animations from sprite sheet
 	_setup_animations()
-	
+
 	# Hide held item initially (will be shown when item is picked up)
 	var held_item_node = get_node_or_null("held_item")
 	if held_item_node:
 		held_item_node.visible = false
-	
+
 	# Start with idle animation
 	animated_sprite.play("idle_down")
-	
+
 	# Connect animation finished signal for actions like plow
 	animated_sprite.animation_finished.connect(_on_animation_finished)
 
-	# Setup SFX player
-	if not has_node("SFXPlayer"):
-		sfx_player = AudioStreamPlayer2D.new()
-		sfx_player.name = "SFXPlayer"
-		add_child(sfx_player)
+	# Setup SFX player - create programmatically (non-positional, like FootstepPlayer)
+	sfx_player = AudioStreamPlayer.new()
+	sfx_player.name = "SFXPlayer"
+	sfx_player.bus = &"Master"
+	add_child(sfx_player)
 
 func _on_interact_area_entered(area: Area2D) -> void:
 	if area is Item:
@@ -205,7 +205,7 @@ func _setup_animations() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if DayManager.is_game_over:
 		return
-	
+
 	if event.is_action_pressed("interact"):
 		_try_interact()
 
