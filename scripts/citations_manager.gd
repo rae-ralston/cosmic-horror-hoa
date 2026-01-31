@@ -9,6 +9,10 @@ var new_citations = {} #same shape ^
 var reopened_citations = {} #same shape ^
 var data = load_json("res://data/citations_by_id.json")
 
+# SFX audio
+var sfx_player: AudioStreamPlayer
+const SFX_COMPLETED = preload("res://assets/sound/completed-task.wav")
+
 func load_json(path: String) -> Variant:
 	var file = FileAccess.open(path, FileAccess.READ)
 	
@@ -77,7 +81,12 @@ func _ready() -> void:
 	# wait for scene nodes to register
 	await get_tree().process_frame
 	await get_tree().process_frame
-	
+
+	# Setup SFX player - create programmatically (non-positional)
+	sfx_player = AudioStreamPlayer.new()
+	sfx_player.name = "SFXPlayer"
+	sfx_player.bus = &"Master"
+	add_child(sfx_player)
 
 	# Connect to zone occupancy changes for all registered zones
 	for zone_id in ZoneRegistry.by_id:
@@ -104,6 +113,11 @@ func evaluate_all() -> void:
 			resolved_citations[id] = now_resolved
 			changed = true
 			print("[CIT] %s resolved=%s" % [id, now_resolved])
+
+			# Play completion sound when citation is newly resolved
+			if now_resolved and sfx_player:
+				sfx_player.stream = SFX_COMPLETED
+				sfx_player.play()
 
 	if changed:
 		print("[CIT] emitting citations_changed")
