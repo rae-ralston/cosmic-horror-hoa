@@ -3,7 +3,7 @@ extends Node
 signal citations_changed
 
 var citation_pool = []
-var active_citations = ["flowerpot_missing"] # sorted in display order
+var active_citations = ["flowerpot_missing", "garden_gnome"] # sorted in display order
 var resolved_citations = {} #"welcome_mat_zone": false
 var new_citations = {} #same shape ^
 var reopened_citations = {} #same shape ^
@@ -40,7 +40,7 @@ func get_active_list_for_ui() -> Array:
 		
 		#definition defaults
 		var title := str(citation.get("title", id))
-		var detail := str(citation.get("detail"), "")
+		var detail := str(citation.get("detail", ""))
 		var priority := int(citation.get("priority", 0))
 
 		rows.append({

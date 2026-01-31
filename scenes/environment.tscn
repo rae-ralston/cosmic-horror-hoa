@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://dfxx88ir3r5eg"]
+[gd_scene load_steps=45 format=4 uid="uid://dfxx88ir3r5eg"]
 
 [ext_resource type="Texture2D" uid="uid://mnfs8kytswlj" path="res://assets/sprites/trees/Big_Spruce_tree.png" id="1_0hc8i"]
 [ext_resource type="Texture2D" uid="uid://dew7tl7bqvejl" path="res://assets/sprites/Pavement_Tiles.png" id="1_yw8f4"]
@@ -13,6 +13,17 @@
 [ext_resource type="Texture2D" uid="uid://cdgy730damrq2" path="res://assets/sprites/Hedge_Tiles.png" id="11_80s2q"]
 [ext_resource type="Texture2D" uid="uid://bh177mk48wv3j" path="res://assets/sprites/decor/Flowers.png" id="12_3am05"]
 [ext_resource type="Texture2D" uid="uid://bnofouyjio8u3" path="res://assets/sprites/decor/Outdoor_Decor.png" id="13_1afuj"]
+[ext_resource type="PackedScene" uid="uid://dnws8dw5c3xsc" path="res://scenes/item.tscn" id="14_80s2q"]
+[ext_resource type="Texture2D" uid="uid://bqqgf7mrg8jdq" path="res://assets/sprites/grass/Grass_3_Middle.png" id="15_1afuj"]
+[ext_resource type="Texture2D" uid="uid://ckpdcwh737rnf" path="res://assets/sprites/Garden gnome.png" id="15_3am05"]
+[ext_resource type="PackedScene" uid="uid://dnrn256j1jnpv" path="res://scenes/placement_zone.tscn" id="16_1afuj"]
+[ext_resource type="Texture2D" uid="uid://c6cwihuxxcwm7" path="res://assets/sprites/Flamingo zone.png" id="17_6p5pf"]
+[ext_resource type="Texture2D" uid="uid://bpyuir4yhv1a2" path="res://assets/sprites/garden_gnome_zone.png" id="17_375xh"]
+[ext_resource type="Texture2D" uid="uid://dk0k42n8m0ssc" path="res://assets/sprites/Rug zone.png" id="18_f0uwl"]
+[ext_resource type="Texture2D" uid="uid://bdpf1ruu3ssa4" path="res://assets/sprites/Patio chair zone.png" id="19_bwu6h"]
+[ext_resource type="Texture2D" uid="uid://drjvm8q5py8w5" path="res://assets/sprites/Flamingo.png" id="20_t8dep"]
+[ext_resource type="Texture2D" uid="uid://wci6nvcm4uy" path="res://assets/sprites/Rug.png" id="23_qhcem"]
+[ext_resource type="Texture2D" uid="uid://btrhmq3o1ggjc" path="res://assets/sprites/Patio chair.png" id="24_l5y12"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_375xh"]
 texture = ExtResource("1_0hc8i")
@@ -1040,3 +1051,56 @@ shape = SubResource("RectangleShape2D_3drpd")
 [node name="decor" type="TileMapLayer" parent="."]
 tile_map_data = PackedByteArray("AAABAPL/AgAEABUAAAAAAPP/AgAHABYAAAAAAPL/AgAHABUAAAAMAPL/AgAGABAAAAAMAPH/AAAAAAIAAAD///L/AQAFAAYAAAALAPL/AQAGAAUAAAD+//L/AQAFAAUAAAD9//H/AAAAAAIAAAD9//D/AAAAAAEAAAD9/+//AAAAAAEAAAD9/+7/AAAAAAAAAAAMAPD/AAAAAAEAAAAMAO//AAAAAAEAAAAMAO7/AAAAAAAAAAAGAAwAAAAAAAMAAAADAAwAAAAAAAMAAAAHAAwAAQABAAEAAAAIAAwAAQABAAEAAAAJAAwAAQABAAEAAAAKAAwAAQABAAEAAAACAAwAAQABAAEAAAABAAwAAQABAAEAAAAAAAwAAQABAAEAAAD//wwAAQABAAEAAAD4//z/AgAFAAkAAAARAPb/AgAFAAkAAAD+//b/AgAGAAcAAAAPAPr/AgAHAAcAAAARAAAAAgACAAMAAAD6/wkAAgAFAA4AAAD5/wkAAgAEAA4AAAD6/wgAAgAFAA0AAAD5/wgAAgAEAA0AAAA=")
 tile_set = SubResource("TileSet_oqnwj")
+
+[node name="Zones" type="Node2D" parent="."]
+position = Vector2(175, -144)
+
+[node name="ZoneFlowerPot" parent="Zones" instance=ExtResource("16_1afuj")]
+position = Vector2(-31, -54)
+marker_texture = ExtResource("15_1afuj")
+
+[node name="ZoneGardenGnome" parent="Zones" instance=ExtResource("16_1afuj")]
+allowed_item_ids = Array[String](["garden_gnome"])
+marker_texture = ExtResource("17_375xh")
+
+[node name="ZoneFlamingo" parent="Zones" instance=ExtResource("16_1afuj")]
+position = Vector2(86, 289)
+allowed_item_ids = Array[String](["flamingo"])
+marker_texture = ExtResource("17_6p5pf")
+
+[node name="ZoneWelcomeMat" parent="Zones" instance=ExtResource("16_1afuj")]
+modulate = Color(1, 1, 1, 0.45000002)
+position = Vector2(-110, -48)
+allowed_item_ids = Array[String](["welcome_mat"])
+marker_texture = ExtResource("18_f0uwl")
+
+[node name="ZonePatioChair" parent="Zones" instance=ExtResource("16_1afuj")]
+modulate = Color(1, 1, 1, 0.45000002)
+position = Vector2(-286, 175)
+allowed_item_ids = Array[String](["patio_chair"])
+marker_texture = ExtResource("19_bwu6h")
+
+[node name="Items" type="Node2D" parent="."]
+
+[node name="GardenGnome" parent="Items" instance=ExtResource("14_80s2q")]
+position = Vector2(343, 241)
+item_id = "garden_gnome"
+world_texture_override = ExtResource("15_3am05")
+
+[node name="FlowerPot" parent="Items" instance=ExtResource("14_80s2q")]
+position = Vector2(-180, 238)
+
+[node name="Flamingo" parent="Items" instance=ExtResource("14_80s2q")]
+position = Vector2(-87, -222)
+item_id = "flamingo"
+world_texture_override = ExtResource("20_t8dep")
+
+[node name="WelcomeMat" parent="Items" instance=ExtResource("14_80s2q")]
+position = Vector2(78, 241)
+item_id = "welcome_mat"
+world_texture_override = ExtResource("23_qhcem")
+
+[node name="PatioChair" parent="Items" instance=ExtResource("14_80s2q")]
+position = Vector2(-47, -173)
+item_id = "patio_chair"
+world_texture_override = ExtResource("24_l5y12")

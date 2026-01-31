@@ -19,7 +19,7 @@ func _ready() -> void:
 
 func _create_nodes() -> void:
 	# Load font to match scene file
-	var font = load("res://assets/fonts/PixelOperator8.ttf")
+	var font = load("res://assets/fonts/CutiveMono-Regular.ttf")
 	
 	# Create LeftColumn with Check
 	var left_col = VBoxContainer.new()
@@ -41,6 +41,8 @@ func _create_nodes() -> void:
 	title = Label.new()
 	title.name = "Title"
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.custom_minimum_size.x = 200
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	title.text = "Title"
 	if font:
 		title.add_theme_font_override("font", font)

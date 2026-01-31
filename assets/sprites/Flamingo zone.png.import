@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wci6nvcm4uy"
-path="res://.godot/imported/Rug.png-911f46611c9980c6930001bf446e7427.ctex"
+uid="uid://c6cwihuxxcwm7"
+path="res://.godot/imported/Flamingo zone.png-2d537242bd264c12cb29f27e3a311190.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/Rug.png"
-dest_files=["res://.godot/imported/Rug.png-911f46611c9980c6930001bf446e7427.ctex"]
+source_file="res://assets/sprites/Flamingo zone.png"
+dest_files=["res://.godot/imported/Flamingo zone.png-2d537242bd264c12cb29f27e3a311190.ctex"]
 
 [params]
 

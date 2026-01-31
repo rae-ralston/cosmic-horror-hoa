@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wci6nvcm4uy"
-path="res://.godot/imported/Rug.png-911f46611c9980c6930001bf446e7427.ctex"
+uid="uid://ckpdcwh737rnf"
+path="res://.godot/imported/Garden gnome.png-403d55ea2cb560bcec337b18a0345ffe.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/Rug.png"
-dest_files=["res://.godot/imported/Rug.png-911f46611c9980c6930001bf446e7427.ctex"]
+source_file="res://assets/sprites/Garden gnome.png"
+dest_files=["res://.godot/imported/Garden gnome.png-403d55ea2cb560bcec337b18a0345ffe.ctex"]
 
 [params]
 
