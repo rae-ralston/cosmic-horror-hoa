@@ -120,36 +120,33 @@ func _add_anim(
 	frameCount: int,
 	fps: float,
 	loop: bool
-	) -> void:
+) -> void:
+	if frames.has_animation(animName):
+		frames.remove_animation(animName)
+
 	frames.add_animation(animName)
 	frames.set_animation_speed(animName, fps)
 	frames.set_animation_loop(animName, loop)
-	
+
+	var sheet_cols := int(sheet.get_width() / float(FRAME_WIDTH))
+	if sheet_cols <= 0:
+		sheet_cols = 1
+
 	for i in range(frameCount):
+		var col := i % sheet_cols
+		var row := int(i / float(sheet_cols)) 
+
 		var atlas := AtlasTexture.new()
 		atlas.atlas = sheet
-		atlas.region = Rect2(i * FRAME_WIDTH, 0, FRAME_WIDTH, FRAME_HEIGHT)
+		atlas.region = Rect2(col * FRAME_WIDTH, row * FRAME_HEIGHT, FRAME_WIDTH, FRAME_HEIGHT)
 		frames.add_frame(animName, atlas)
-
-func _make_idle_from_walk(frames: SpriteFrames, idle_name: String, walk_name: String) -> void:
-	if not frames.has_animation(walk_name):
-		push_warning("Can't make %s: missing %s" % [idle_name, walk_name])
-		return
-
-	frames.add_animation(idle_name)
-	frames.set_animation_speed(idle_name, 1.0)
-	frames.set_animation_loop(idle_name, true)
-
-	var first: Texture2D = frames.get_frame_texture(walk_name, 0)
-	frames.add_frame(idle_name, first)
 
 func _setup_animations() -> void:
 	var sprite_frames := SpriteFrames.new()
 	if sprite_frames.has_animation("default"):
 		sprite_frames.remove_animation("default")
-		
-	var SHEETS := {
-		# WALK (source sheets)
+
+	var WALK_SHEETS := {
 		"walk_up":         preload("res://assets/sprites/walk_north.png"),
 		"walk_down":       preload("res://assets/sprites/walk_south.png"),
 		"walk_right":      preload("res://assets/sprites/walk_west.png"),
@@ -158,32 +155,38 @@ func _setup_animations() -> void:
 		"walk_up_right":   preload("res://assets/sprites/walk_northwest.png"),
 		"walk_down_left":  preload("res://assets/sprites/walk_southwest.png"),
 		"walk_down_right": preload("res://assets/sprites/walk_southwest.png"),
-		#TODO: Add idle anim!
 	}
-	
-	var WALK_FPS := 8.0
-	var WALK_FRAMES := 8
-	var WALK_SHOULD_LOOP := true
-	
-	for anim_name in SHEETS.keys():
-		var sheet: Texture2D = SHEETS[anim_name]
+
+	var IDLE_SHEETS := {
+		"idle_up":         preload("res://assets/sprites/idle_up.png"),
+		"idle_down":       preload("res://assets/sprites/idle_down.png"),
+		"idle_right":      preload("res://assets/sprites/idle_left.png"),
+		"idle_left":       preload("res://assets/sprites/idle_left.png"),
+		"idle_up_left":    preload("res://assets/sprites/idle_up_left.png"),
+		"idle_up_right":   preload("res://assets/sprites/idle_up_left.png"),
+		"idle_down_left":  preload("res://assets/sprites/idle_down_left.png"),
+		"idle_down_right": preload("res://assets/sprites/idle_down_left.png"),
+	}
+
+	const WALK_FPS := 8.0
+	const WALK_FRAMES := 8
+	const IDLE_FPS := 8.0        # tweak if you want (6–10 usually feels fine)
+	const IDLE_FRAMES := 12
+
+	for anim_name in WALK_SHEETS.keys():
+		var sheet: Texture2D = WALK_SHEETS[anim_name]
 		if sheet == null:
 			push_warning("Missing sheet for anim '%s'" % anim_name)
 			continue
-		
-		_add_anim(sprite_frames, sheet, anim_name, WALK_FRAMES, WALK_FPS, WALK_SHOULD_LOOP)
-	
-	# Placeholder idles from walk frame 0 (8 directions)
-	_make_idle_from_walk(sprite_frames, "idle_down", "walk_down")
-	_make_idle_from_walk(sprite_frames, "idle_up", "walk_up")
-	_make_idle_from_walk(sprite_frames, "idle_left", "walk_left")
-	_make_idle_from_walk(sprite_frames, "idle_right", "walk_right")
+		_add_anim(sprite_frames, sheet, anim_name, WALK_FRAMES, WALK_FPS, true)
 
-	_make_idle_from_walk(sprite_frames, "idle_up_left", "walk_up_left")
-	_make_idle_from_walk(sprite_frames, "idle_up_right", "walk_up_right")
-	_make_idle_from_walk(sprite_frames, "idle_down_left", "walk_down_left")
-	_make_idle_from_walk(sprite_frames, "idle_down_right", "walk_down_right")
-	
+	for anim_name in IDLE_SHEETS.keys():
+		var sheet: Texture2D = IDLE_SHEETS[anim_name]
+		if sheet == null:
+			push_warning("Missing sheet for anim '%s'" % anim_name)
+			continue
+		_add_anim(sprite_frames, sheet, anim_name, IDLE_FRAMES, IDLE_FPS, true)
+
 	animated_sprite.sprite_frames = sprite_frames
 
 func _unhandled_input(event: InputEvent) -> void:
