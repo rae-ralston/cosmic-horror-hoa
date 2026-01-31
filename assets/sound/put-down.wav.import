@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://8ew3q57n5tcr"
-path="res://.godot/imported/put-down.wav-f134404ce19db26f9803882f50ee9874.sample"
+path="res://.godot/imported/put-down.wav-02f1fab17108553c887170194d195ece.sample"
 
 [deps]
 
-source_file="res://assets/audio/sfx/put-down.wav"
-dest_files=["res://.godot/imported/put-down.wav-f134404ce19db26f9803882f50ee9874.sample"]
+source_file="res://assets/sound/put-down.wav"
+dest_files=["res://.godot/imported/put-down.wav-02f1fab17108553c887170194d195ece.sample"]
 
 [params]
 

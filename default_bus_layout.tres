@@ -1,4 +1,7 @@
-[gd_resource type="AudioBusLayout" load_steps=3 format=3 uid="uid://duq04vfxts1tc"]
+[gd_resource type="AudioBusLayout" load_steps=4 format=3 uid="uid://duq04vfxts1tc"]
+
+[sub_resource type="AudioEffectHardLimiter" id="AudioEffectHardLimiter_j3pel"]
+resource_name = "HardLimiter"
 
 [sub_resource type="AudioEffectHighPassFilter" id="AudioEffectHighPassFilter_j3pel"]
 resource_name = "HighPassFilter"
@@ -10,6 +13,8 @@ resource_name = "Compressor"
 threshold = -19.0
 
 [resource]
+bus/0/effect/0/effect = SubResource("AudioEffectHardLimiter_j3pel")
+bus/0/effect/0/enabled = true
 bus/1/name = &"Footsteps"
 bus/1/solo = false
 bus/1/mute = false
