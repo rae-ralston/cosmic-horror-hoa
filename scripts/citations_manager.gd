@@ -40,7 +40,7 @@ func get_active_list_for_ui() -> Array:
 		
 		#definition defaults
 		var title := str(citation.get("title", id))
-		var detail := str(citation.get("detail"), "")
+		var detail := str(citation.get("detail", ""))
 		var priority := int(citation.get("priority", 0))
 
 		rows.append({
