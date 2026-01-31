@@ -81,7 +81,6 @@ func _fade_overlay_out() -> void:
 	
 func _on_day_ended(win: bool) -> void:
 	game_over = true
-	#get_tree().paused = true
 	print("[DAY] ended win=", win)
 	#$EndScreen.show_result(win)
 
@@ -91,26 +90,29 @@ var _start_letter_showing := false
 func show_start_letter() -> void:
 	if _start_letter_showing:
 		return
-	
-	if $HUD.get_node_or_null("StartLetterUI") != null:
-		return
-	
+
 	_start_letter_showing = true
-	
-	var ui := START_LETTER_SCENE.instantiate()
-	ui.name = "StartLetterUI"
-	$HUD.add_child(ui)
-	
-	ui.dismissed.connect(_on_start_letter_dismissed)
-	
+
+	var ui := $HUD.get_node_or_null("StartLetterUI")
+	if ui == null:
+		ui = START_LETTER_SCENE.instantiate()
+		ui.name = "StartLetterUI"
+		$HUD.add_child(ui)
+
+	# Always ensure connection exists
+	if not ui.dismissed.is_connected(_on_start_letter_dismissed):
+		ui.dismissed.connect(_on_start_letter_dismissed)
+
 	Player.set_process(false)
 	Player.set_physics_process(false)
 
+	print("[WORLD] start letter active. connected=", ui.dismissed.is_connected(_on_start_letter_dismissed))
+
 func _on_start_letter_dismissed() -> void:
 	_start_letter_showing = false
-	
-	await get_tree().process_frame
-	
+	call_deferred("_begin_run")
+
+func _begin_run() -> void:
 	Player.set_process(true)
 	Player.set_physics_process(true)
 	day_manager.start_day()

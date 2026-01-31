@@ -47,5 +47,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _dismiss() -> void:
 	print("[LETTER] dismiss pressed")
-	emit_signal("dismissed")
+	#emit_signal("dismissed")
+	dismissed.emit()
 	queue_free()

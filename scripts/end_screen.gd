@@ -31,7 +31,7 @@ func _wire_buttons_once() -> void:
 func show_result(win: bool) -> void:
 	_wire_buttons_once()
 
-	print("[END] SHOW path=", get_path(), " paused=", get_tree().paused, " time_scale=", Engine.time_scale)
+	print("[END] SHOW path=", get_path(), " time_scale=", Engine.time_scale)
 
 	visible = true
 
@@ -61,7 +61,6 @@ func _on_restart_pressed() -> void:
 
 func _do_restart() -> void:
 	print("[END] do restart")
-	get_tree().paused = false
 	Engine.time_scale = 1.0
 
 	DayManager.reset_for_new_run()
