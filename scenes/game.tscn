@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://bsneu6mo1x44l"]
+[gd_scene load_steps=41 format=3 uid="uid://bsneu6mo1x44l"]
 
 [ext_resource type="Script" uid="uid://bhyrnlv1g4ay5" path="res://scripts/game.gd" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://bc33ln64vga0w" path="res://scripts/inventory_hud.gd" id="2_0tnpc"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://j28d6tuyrgp6" path="res://scenes/timer_display.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://mdsr1aaoki0k" path="res://scenes/player.tscn" id="6_player"]
 [ext_resource type="PackedScene" uid="uid://dwnxilxpjb8yq" path="res://scenes/start_letter_ui.tscn" id="7_trtic"]
+[ext_resource type="PackedScene" uid="uid://settings_ui_001" path="res://scenes/settings_ui.tscn" id="8_settings"]
 [ext_resource type="PackedScene" uid="uid://b2eqcsxi2or4p" path="res://scenes/citations_overlay.tscn" id="11_kvuet"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kvuet"]
@@ -294,6 +295,9 @@ offset_bottom = 557.0
 text = "Press E to pick up/put down items"
 
 [node name="StartLetterUI" parent="HUD" instance=ExtResource("7_trtic")]
+
+[node name="SettingsUi" parent="HUD" instance=ExtResource("8_settings")]
+visible = false
 
 [node name="CitationsManager" type="Node" parent="."]
 script = ExtResource("3_lnu2h")

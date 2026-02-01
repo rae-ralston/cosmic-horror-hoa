@@ -22,6 +22,10 @@ func _ready() -> void:
 	add_child(music_player)
 	add_child(sfx_player)
 
+	# Route to audio buses
+	music_player.bus = &"Music"
+	sfx_player.bus = &"Music"  # tick-tock is phase ambience
+
 	# Load music assets
 	normal_music = load("res://assets/music/main_theme_normal.ogg")
 	warning_sfx = load("res://assets/music/warning_tick_tock.wav")

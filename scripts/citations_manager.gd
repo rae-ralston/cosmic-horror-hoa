@@ -86,8 +86,8 @@ func _ready() -> void:
 	# Setup SFX player - create programmatically (non-positional)
 	sfx_player = AudioStreamPlayer.new()
 	sfx_player.name = "SFXPlayer"
-	sfx_player.bus = &"Master"
-	sfx_player.volume_linear = 0.7
+	sfx_player.bus = &"SFX"
+	sfx_player.volume_linear = 0.5
 	add_child(sfx_player)
 
 	# Connect to PhaseManager danger_started signal for citation-added sound
