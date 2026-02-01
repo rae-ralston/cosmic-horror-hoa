@@ -9,6 +9,7 @@ const START_LETTER_SCENE := preload("res://scenes/start_letter_ui.tscn")
 var day_manager: DayManager = DayManager
 
 var game_over := false
+var sfx_player: AudioStreamPlayer
 
 # Tween for smooth overlay transitions
 var overlay_tween: Tween = null
@@ -28,6 +29,10 @@ func _ready() -> void:
 	# Initialize overlay as transparent
 	if danger_overlay:
 		danger_overlay.modulate.a = 0.0
+
+	# Initialize game over sound effect player
+	sfx_player = AudioStreamPlayer.new()
+	add_child(sfx_player)
 
 	# Show intro letter FIRST, then start day on dismiss
 	show_start_letter()
@@ -82,6 +87,13 @@ func _fade_overlay_out() -> void:
 func _on_day_ended(win: bool) -> void:
 	game_over = true
 	print("[DAY] ended win=", win)
+
+	# Play game over sound
+	var game_over_sound = load("res://assets/sound/game-over.ogg")
+	if game_over_sound and sfx_player:
+		sfx_player.stream = game_over_sound
+		sfx_player.play()
+
 	#$EndScreen.show_result(win)
 
 
