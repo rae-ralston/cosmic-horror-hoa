@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://bllxxkaqogxh6"]
+[gd_scene load_steps=4 format=3 uid="uid://bllxxkaqogxh6"]
 
 [ext_resource type="Script" uid="uid://c02sx4mfrncw4" path="res://scripts/start_ui.gd" id="1_31gsc"]
 [ext_resource type="Texture2D" uid="uid://da1qf7k0406i4" path="res://assets/sprites/the-suburbs.png" id="1_jef12"]
@@ -31,20 +31,24 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -555.5
-offset_top = 18.0
-offset_right = 555.5
-offset_bottom = 89.0
+offset_left = -414.0
+offset_top = 19.0
+offset_right = 697.0
+offset_bottom = 97.0
 grow_horizontal = 2
 theme_override_fonts/font = ExtResource("2_cutivemono")
 theme_override_font_sizes/font_size = 70
-text = "Cosmic Horror HOA"
+text = "The Eye of the HOA"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 87.0
+offset_top = -1.0
+offset_right = 87.0
+offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 40
@@ -65,6 +69,7 @@ theme_override_font_sizes/font_size = 40
 text = "Start "
 
 [node name="SettingsButton" type="Button" parent="MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_fonts/font = ExtResource("2_cutivemono")

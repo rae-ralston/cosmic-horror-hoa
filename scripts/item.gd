@@ -8,9 +8,6 @@ class_name Item
 var _can_pickup: bool = false
 var _pulse_t: float = 0.0
 
-var _can_pickup: bool = false
-var _pulse_t: float = 0.0
-
 func set_item_id(value: String) -> void:
 	item_id = value
 	if is_node_ready():
