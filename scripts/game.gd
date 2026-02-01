@@ -32,6 +32,7 @@ func _ready() -> void:
 
 	# Initialize game over sound effect player
 	sfx_player = AudioStreamPlayer.new()
+	sfx_player.bus = &"SFX"
 	add_child(sfx_player)
 
 	# Show intro letter FIRST, then start day on dismiss

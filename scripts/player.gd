@@ -65,7 +65,7 @@ func _ready() -> void:
 	# Setup SFX player - create programmatically (non-positional, like FootstepPlayer)
 	sfx_player = AudioStreamPlayer.new()
 	sfx_player.name = "SFXPlayer"
-	sfx_player.bus = &"Master"
+	sfx_player.bus = &"SFX"
 	add_child(sfx_player)
 
 func _on_interact_area_entered(area: Area2D) -> void:

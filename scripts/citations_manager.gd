@@ -86,7 +86,7 @@ func _ready() -> void:
 	# Setup SFX player - create programmatically (non-positional)
 	sfx_player = AudioStreamPlayer.new()
 	sfx_player.name = "SFXPlayer"
-	sfx_player.bus = &"Master"
+	sfx_player.bus = &"SFX"
 	sfx_player.volume_linear = 0.7
 	add_child(sfx_player)
 
