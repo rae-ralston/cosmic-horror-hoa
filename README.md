@@ -3,10 +3,12 @@
 ## How to Run the Game
 
 1. **Download Godot 4.5** (or later) from [godotengine.org](https://godotengine.org/download/)
+
    - Choose the standard version for your operating system (Windows, Mac, or Linux)
    - No installation required - just extract and run
 
 2. **Open the project**
+
    - Launch Godot
    - In the Project Manager, click **Import**
    - Navigate to this project folder and select `project.godot`
@@ -32,7 +34,25 @@ used assets (with commercial/free use licenses)
 
 - [Cute Fantasy RPG asset pack by Kenmi](https://kenmi-art.itch.io/cute-fantasy-rpg)
 - landing page graphic, v1: [Killer Rabbit Media](https://www.instagram.com/killerrabbitmedia/), [source](https://www.reddit.com/r/PixelArt/comments/zp5wo0/the_suburbs/)
-- Music by [Ethan (link needed?)](#) and [Nick Tuttle](https://www.youtube.com/channel/UCGoMMFgbbAWefB8qoYbwPVw)
+
+## Music + SFX
+
+### Lunar Dusk Sound Team
+
+- **Sound Designer** - [Ethan Stark](https://soundcloud.com/ethanstark)
+- **Main Theme** - [Nick Tuttle](https://nicktuttle.bandcamp.com/)
+- **Danger Theme** - [Garrus Cipher](https://garruscipher.bandcamp.com/) and [Nick Tuttle](https://nicktuttle.bandcamp.com/)
+- **Synthesized SFX** - [Stephen (@minimal.camera)](https://www.youtube.com/@minimal.camera)
+
+#### SFX Credits
+
+**Foley Grass Foot steps.wav** by Chubbers1995
+https://freesound.org/s/344625/
+License: Creative Commons 0
+
+**Tick Tock.wav** by AudioSea
+https://freesound.org/s/581342/
+License: Creative Commons 0
 
 ## Theme: The World is Watching
 
