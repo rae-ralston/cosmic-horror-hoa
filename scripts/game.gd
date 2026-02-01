@@ -88,6 +88,9 @@ func _on_day_ended(win: bool) -> void:
 	game_over = true
 	print("[DAY] ended win=", win)
 
+	# Stop all music so only game-over sound plays
+	MusicManager.stop_music()
+
 	# Play game over sound
 	var game_over_sound = load("res://assets/sound/game-over.ogg")
 	if game_over_sound and sfx_player:
