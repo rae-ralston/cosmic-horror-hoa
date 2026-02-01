@@ -8,7 +8,6 @@ const ITEMS_BY_ID := {
 	"flower_pot": {
 		"id": "flower_pot",
 		"display_name": "Flower Pot",
-		"pickupable": true,
 		"size_class": "small",
 		"icon_region": Rect2(0, 0, 16, 16),
 		"world_region": Rect2(80, 144, 16, 16),
@@ -16,19 +15,27 @@ const ITEMS_BY_ID := {
 	"yard_flamingo": {
 		"id": "yard_flamingo",
 		"display_name": "Yard Flamingo",
-		"pickupable": true,
-		"size_class": "medium",
 		"icon_region": Rect2(16, 0, 16, 16),
 		"world_region": Rect2(80, 128, 16, 16)
 	},
 	"welcome_mat": {
 		"id": "welcome_mat",
 		"display_name": "Welcome Mat",
-		"pickupable": true,
-		"size_class": "flat",
 		"icon_region": Rect2(32, 0, 16, 16),
 		"world_region": Rect2(80, 0, 16, 16)
-	}
+	},
+	"garden_gnome": {
+		"id": "garden_gnome",
+		"display_name": "Garden Gnome",
+		"icon_region": Rect2(32, 0, 16, 16),
+		"world_region": Rect2(80, 0, 16, 16)
+	},
+	"patio_chair": {
+		"id": "patio_chair",
+		"display_name": "Patio Chair",
+		"icon_region": Rect2(32, 0, 16, 16),
+		"world_region": Rect2(80, 0, 16, 16)
+	},
 }
 
 static func get_world_texture(item_id: String) -> Texture2D:

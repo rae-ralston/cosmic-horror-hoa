@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wci6nvcm4uy"
-path="res://.godot/imported/Rug.png-911f46611c9980c6930001bf446e7427.ctex"
+uid="uid://bdpf1ruu3ssa4"
+path="res://.godot/imported/Patio chair zone.png-0c7d2cf6bca0e3442a234a10c0afbb89.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/Rug.png"
-dest_files=["res://.godot/imported/Rug.png-911f46611c9980c6930001bf446e7427.ctex"]
+source_file="res://assets/sprites/Patio chair zone.png"
+dest_files=["res://.godot/imported/Patio chair zone.png-0c7d2cf6bca0e3442a234a10c0afbb89.ctex"]
 
 [params]
 

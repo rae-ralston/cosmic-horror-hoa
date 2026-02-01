@@ -27,3 +27,5 @@ modulate = Color(1, 1, 1, 0.5)
 visible = false
 modulate = Color(1, 1, 1, 0.21176471)
 texture = ExtResource("2_kx0hh")
+
+[node name="ZoneMarker" type="Sprite2D" parent="."]

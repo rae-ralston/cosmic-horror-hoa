@@ -1,8 +1,8 @@
 {
   "flowerpot_missing":{
 	"id": "flowerpot_missing",
-	"title": "Flower pot violates aesthetic alignment",
-	"detail": "Your pot is not in its cosmically mandated location.",
+	"title": "Flower pot exhibits independent thought",
+	"detail": "Reposition the pot to its mandated location. We cannot allow self-determination.",
 	"priority": 1,
 	"deadline_phase": 0,
 	"tags": ["placement"],
@@ -12,14 +12,81 @@
 	"conditions": [
 	  {
 		"type": "ITEM_IN_ZONE",
-		"params": { "item_id": "flower_pot", "zone_id": "ZoneFlowerPot" }
+		"params": { 
+			"item_id": "flower_pot", 
+			"zone_id": "ZoneFlowerPot",
+			"zone_img": "",
+		}
+	  }
+	]
+  },
+  "patio_chair":{
+	"id": "patio_chair",
+	"title": "Patio seating disrupts neighborly surveillance",
+	"detail": "This seat must face the HOA-approved horizon line. Adjust immediately to avoid additional scrutiny.",
+	"priority": 1,
+	"deadline_phase": 0,
+	"tags": ["placement"],
+	"sabotage_weight": 1,
+	"is_sabotage_candidate": true,
+	"max_reopens": 1,
+	"conditions": [
+	  {
+		"type": "ITEM_IN_ZONE",
+		"params": { 
+			"item_id": "patio_chair", 
+			"zone_id": "ZonePatioChair",
+			"zone_img": "",
+		}
+	  }
+	]
+  },
+  "welcome_mat":{
+	"id": "welcome_mat",
+	"title": "Welcome mat invites the wrong entity",
+	"detail": "Place the mat in front of the door that exists.",
+	"priority": 1,
+	"deadline_phase": 0,
+	"tags": ["placement"],
+	"sabotage_weight": 1,
+	"is_sabotage_candidate": true,
+	"max_reopens": 1,
+	"conditions": [
+	  {
+		"type": "ITEM_IN_ZONE",
+		"params": { 
+			"item_id": "welcome_mat", 
+			"zone_id": "ZoneWelcomeMat",
+			"zone_img": "",
+		}
+	  }
+	]
+  },
+  "garden_gnome":{
+	"id": "garden_gnome",
+	"title": "Gnome breaches perimeter reality",
+	"detail": "Return the gnome to the warded boundary stone.",
+	"priority": 1,
+	"deadline_phase": 0,
+	"tags": ["placement"],
+	"sabotage_weight": 1,
+	"is_sabotage_candidate": true,
+	"max_reopens": 1,
+	"conditions": [
+	  {
+		"type": "ITEM_IN_ZONE",
+		"params": { 
+			"item_id": "garden_gnome", 
+			"zone_id": "ZoneGardenGnome",
+			"zone_img": "",
+		}
 	  }
 	]
   },
   "yard_flamingo":{
 	"id": "yard_flamingo",
-	"title": "Yard Flamingo in wrong spot",
-	"detail": "not good place",
+	"title": "Lawn flamingo exhibits aggressive posture",
+	"detail": "Reposition the flamingo to a more submissive bearing.",
 	"priority": 2,
 	"deadline_phase": 0,
 	"tags": [ "placement"],
@@ -29,7 +96,11 @@
 	"conditions": [
 	  {
 		"type": "ITEM_IN_ZONE",
-		"params": { "item_id": "yard_flamingo", "zone_id": "ZoneFlamingo" }
+		"params": { 
+			"item_id": "yard_flamingo", 
+			"zone_id": "ZoneFlamingo",
+			"zone_img": "",
+		}
 	  }
 	]
   }

@@ -6,9 +6,11 @@ const START_LETTER_SCENE := preload("res://scenes/start_letter_ui.tscn")
 @onready var CitationsManager: Node = $CitationsManager
 @onready var Player: Node = $GameView/GameViewport/World/player
 @onready var danger_overlay: ColorRect = $HUD/DangerOverlay/DangerColor
+@onready var settings_ui: Control = $HUD/SettingsUi
 var day_manager: DayManager = DayManager
 
 var game_over := false
+var sfx_player: AudioStreamPlayer
 
 # Tween for smooth overlay transitions
 var overlay_tween: Tween = null
@@ -28,6 +30,11 @@ func _ready() -> void:
 	# Initialize overlay as transparent
 	if danger_overlay:
 		danger_overlay.modulate.a = 0.0
+
+	# Initialize game over sound effect player
+	sfx_player = AudioStreamPlayer.new()
+	sfx_player.bus = &"SFX"
+	add_child(sfx_player)
 
 	# Show intro letter FIRST, then start day on dismiss
 	show_start_letter()
@@ -82,6 +89,16 @@ func _fade_overlay_out() -> void:
 func _on_day_ended(win: bool) -> void:
 	game_over = true
 	print("[DAY] ended win=", win)
+
+	# Stop all music so only game-over sound plays
+	MusicManager.stop_music()
+
+	# Play game over sound
+	var game_over_sound = load("res://assets/sound/game-over.ogg")
+	if game_over_sound and sfx_player:
+		sfx_player.stream = game_over_sound
+		sfx_player.play()
+
 	#$EndScreen.show_result(win)
 
 
@@ -117,3 +134,11 @@ func _begin_run() -> void:
 	Player.set_physics_process(true)
 	day_manager.start_day()
 	CitationsManager.when_day_starts()
+
+
+func _input(event: InputEvent) -> void:
+	if game_over:
+		return
+	if event.is_action_pressed("settings_toggle") and not settings_ui.visible:
+		settings_ui.open()
+		get_viewport().set_input_as_handled()

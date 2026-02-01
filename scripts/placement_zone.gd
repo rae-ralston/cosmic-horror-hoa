@@ -6,10 +6,15 @@ class_name PlacementZone
 @export var preview_sprite_path: NodePath = "PreviewSprite"
 @export var highlight_path: NodePath = "ZoneHighlight"
 @export var zone_id: String = ""
+@export var marker_texture: Texture2D
+@export var marker_sprite_path: NodePath = "ZoneMarker"
+@export var marker_z: int = 0
+@export var preview_z: int = 1
 
 @onready var snap_point: Node2D = get_node_or_null(snap_point_path)
 @onready var preview_sprite: Sprite2D = get_node_or_null(preview_sprite_path)
 @onready var highlight: Sprite2D = get_node_or_null(highlight_path)
+@onready var marker_sprite: Sprite2D = get_node_or_null(marker_sprite_path)
 
 signal occupancy_changed(zone: PlacementZone)
 var occupied_item_id: String = ""
@@ -17,10 +22,18 @@ var occupied_item_id: String = ""
 var pulse_time := 0.0
 
 func _ready() -> void:
-	# Use node name as zone_id if not explicitly set
 	if zone_id.is_empty():
 		zone_id = name
 	ZoneRegistry.register(self)
+
+	if marker_sprite and marker_texture:
+		marker_sprite.texture = marker_texture
+	
+	if marker_sprite:
+		marker_sprite.z_index = marker_z
+
+	if preview_sprite:
+		preview_sprite.z_index = preview_z
 
 func _exit_tree() -> void:
 	ZoneRegistry.unregister(self)

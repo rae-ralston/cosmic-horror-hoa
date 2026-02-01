@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c8uqcx2xh0341" path="res://scripts/citations_list_ui.gd" id="1_88n5t"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p57ef"]
+bg_color = Color(0.16007765, 0.16007765, 0.16007765, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1

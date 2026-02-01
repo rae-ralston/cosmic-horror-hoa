@@ -3,11 +3,16 @@ extends Node
 signal citations_changed
 
 var citation_pool = []
-var active_citations = ["flowerpot_missing"] # sorted in display order
+var active_citations = ["flowerpot_missing", "garden_gnome"] # sorted in display order
 var resolved_citations = {} #"welcome_mat_zone": false
 var new_citations = {} #same shape ^
 var reopened_citations = {} #same shape ^
 var data = load_json("res://data/citations_by_id.json")
+
+# SFX audio
+var sfx_player: AudioStreamPlayer
+const SFX_COMPLETED = preload("res://assets/sound/completed-task.wav")
+const SFX_CITATION_ADDED = preload("res://assets/sound/citation-added.wav")
 
 func load_json(path: String) -> Variant:
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -77,7 +82,17 @@ func _ready() -> void:
 	# wait for scene nodes to register
 	await get_tree().process_frame
 	await get_tree().process_frame
-	
+
+	# Setup SFX player - create programmatically (non-positional)
+	sfx_player = AudioStreamPlayer.new()
+	sfx_player.name = "SFXPlayer"
+	sfx_player.bus = &"SFX"
+	sfx_player.volume_linear = 0.5
+	add_child(sfx_player)
+
+	# Connect to PhaseManager danger_started signal for citation-added sound
+	if not PhaseManager.danger_started.is_connected(_on_danger_started):
+		PhaseManager.danger_started.connect(_on_danger_started)
 
 	# Connect to zone occupancy changes for all registered zones
 	for zone_id in ZoneRegistry.by_id:
@@ -92,6 +107,13 @@ func _on_zone_occupancy_changed(zone: PlacementZone) -> void:
 	print("[CIT] zone changed:", zone.name, " occupied=", zone.occupied_item_id)
 	evaluate_all()
 
+func _on_danger_started() -> void:
+	# Play citation-added sound once at start of danger phase
+	if sfx_player:
+		sfx_player.stream = SFX_CITATION_ADDED
+		sfx_player.play()
+	print("[CIT] danger_started -> playing citation-added sound")
+
 func evaluate_all() -> void:
 	var changed := false
 
@@ -104,6 +126,11 @@ func evaluate_all() -> void:
 			resolved_citations[id] = now_resolved
 			changed = true
 			print("[CIT] %s resolved=%s" % [id, now_resolved])
+
+			# Play completion sound when citation is newly resolved
+			if now_resolved and sfx_player:
+				sfx_player.stream = SFX_COMPLETED
+				sfx_player.play()
 
 	if changed:
 		print("[CIT] emitting citations_changed")

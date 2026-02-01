@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 [gd_scene load_steps=41 format=3 uid="uid://bsneu6mo1x44l"]
-=======
-[gd_scene load_steps=40 format=3 uid="uid://bsneu6mo1x44l"]
->>>>>>> Stashed changes
 
 [ext_resource type="Script" uid="uid://bhyrnlv1g4ay5" path="res://scripts/game.gd" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://bc33ln64vga0w" path="res://scripts/inventory_hud.gd" id="2_0tnpc"]
@@ -12,16 +8,14 @@
 [ext_resource type="Script" uid="uid://v7bdgn17mkfn" path="res://scenes/danger_overlay.gd" id="4_kvpfn"]
 [ext_resource type="PackedScene" uid="uid://llv2q3dauk28" path="res://scenes/citation_list_ui.tscn" id="4_vtaks"]
 [ext_resource type="Texture2D" uid="uid://byx30lok2xo3u" path="res://assets/sprites/evil_eye_sheet.png" id="5_dinhu"]
-[ext_resource type="PackedScene" uid="uid://b0tgcheqkftmo" path="res://scenes/EndScreenUI.tscn" id="5_endui"]
+[ext_resource type="PackedScene" uid="uid://cwdx370arffpf" path="res://scenes/EndScreenUI.tscn" id="5_endui"]
 [ext_resource type="PackedScene" uid="uid://j28d6tuyrgp6" path="res://scenes/timer_display.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://mdsr1aaoki0k" path="res://scenes/player.tscn" id="6_player"]
 [ext_resource type="PackedScene" uid="uid://dwnxilxpjb8yq" path="res://scenes/start_letter_ui.tscn" id="7_trtic"]
-<<<<<<< Updated upstream
 [ext_resource type="PackedScene" uid="uid://dnrn256j1jnpv" path="res://scenes/placement_zone.tscn" id="9_vtaks"]
 [ext_resource type="PackedScene" uid="uid://dnws8dw5c3xsc" path="res://scenes/item.tscn" id="10_kvpfn"]
-=======
+[ext_resource type="PackedScene" uid="uid://settings_ui_001" path="res://scenes/settings_ui.tscn" id="8_settings"]
 [ext_resource type="PackedScene" uid="uid://b2eqcsxi2or4p" path="res://scenes/citations_overlay.tscn" id="11_kvuet"]
->>>>>>> Stashed changes
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kvuet"]
 atlas = ExtResource("5_dinhu")
@@ -304,6 +298,9 @@ text = "Press E to pick up/put down items"
 
 [node name="StartLetterUI" parent="HUD" instance=ExtResource("7_trtic")]
 
+[node name="SettingsUi" parent="HUD" instance=ExtResource("8_settings")]
+visible = false
+
 [node name="CitationsManager" type="Node" parent="."]
 script = ExtResource("3_lnu2h")
 
@@ -339,26 +336,9 @@ render_target_update_mode = 4
 [node name="World" type="Node2D" parent="GameView/GameViewport"]
 
 [node name="environment" parent="GameView/GameViewport/World" instance=ExtResource("2_yqjtg")]
-position = Vector2(106.38816, 97.753845)
+position = Vector2(41.775455, 64.799995)
 
 [node name="player" parent="GameView/GameViewport/World" instance=ExtResource("6_player")]
-
-[node name="FlowerPot" type="Node" parent="GameView/GameViewport/World"]
-
-[node name="ZoneFlowerPot" parent="GameView/GameViewport/World/FlowerPot" instance=ExtResource("9_vtaks")]
-position = Vector2(223.35944, 133.2)
-
-[node name="Item" parent="GameView/GameViewport/World/FlowerPot" instance=ExtResource("10_kvpfn")]
-position = Vector2(114.74325, 32.67692)
-
-[node name="Flamingo" type="Node" parent="GameView/GameViewport/World"]
-
-[node name="Item2" parent="GameView/GameViewport/World/Flamingo" instance=ExtResource("10_kvpfn")]
-position = Vector2(16.431679, 106.33846)
-item_id = "yard_flamingo"
-
-[node name="ZoneFlamingo" parent="GameView/GameViewport/World/Flamingo" instance=ExtResource("9_vtaks")]
-position = Vector2(50.687553, 153.41537)
-allowed_item_ids = Array[String](["yard_flamingo"])
+position = Vector2(148.44211, 83.907684)
 
 [connection signal="citations_changed" from="CitationsManager" to="." method="_on_citations_manager_citations_changed"]

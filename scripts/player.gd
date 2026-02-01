@@ -34,28 +34,39 @@ var current_highlight_zone: PlacementZone = null
 var footstep_timer: float = 0.0
 const WALK_STEP_INTERVAL: float = 0.27  # seconds between steps
 
+# SFX audio
+var sfx_player: AudioStreamPlayer
+const SFX_PICKUP = preload("res://assets/sound/pick-up.wav")
+const SFX_PUTDOWN = preload("res://assets/sound/put-down.wav")
+
 func _ready() -> void:
 	#player interact area for picking up items
 	interact_area.area_entered.connect(_on_interact_area_entered)
 	interact_area.area_exited.connect(_on_interact_area_exited)
-	
+
 	#placement zones for solving puzzles
 	placement_area.area_entered.connect(_on_placement_zone_entered)
 	placement_area.area_exited.connect(_on_placement_zone_exited)
-	
+
 	# Setup animations from sprite sheet
 	_setup_animations()
-	
+
 	# Hide held item initially (will be shown when item is picked up)
 	var held_item_node = get_node_or_null("held_item")
 	if held_item_node:
 		held_item_node.visible = false
-	
+
 	# Start with idle animation
 	animated_sprite.play("idle_down")
-	
+
 	# Connect animation finished signal for actions like plow
 	animated_sprite.animation_finished.connect(_on_animation_finished)
+
+	# Setup SFX player - create programmatically (non-positional, like FootstepPlayer)
+	sfx_player = AudioStreamPlayer.new()
+	sfx_player.name = "SFXPlayer"
+	sfx_player.bus = &"SFX"
+	add_child(sfx_player)
 
 func _on_interact_area_entered(area: Area2D) -> void:
 	if area is Item:
@@ -194,7 +205,7 @@ func _setup_animations() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if DayManager.is_game_over:
 		return
-	
+
 	if event.is_action_pressed("interact"):
 		_try_interact()
 
@@ -219,6 +230,11 @@ func _try_interact() -> void:
 		
 		current_preview_zone = null
 		inventory.drop(drop_pos, world)
+
+		# Play putdown sound
+		sfx_player.stream = SFX_PUTDOWN
+		sfx_player.play()
+
 		_update_zone_player_feedback()
 		return
 
@@ -228,6 +244,10 @@ func _try_interact() -> void:
 		return
 
 	if inventory.pickup(item):
+		# Play pickup sound
+		sfx_player.stream = SFX_PICKUP
+		sfx_player.play()
+
 		item.set_pickup_highlight(false)
 		nearby_items.erase(item)
 
