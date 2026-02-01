@@ -99,8 +99,9 @@ func _play_music(stream: AudioStream) -> void:
 		music_player.play()
 
 func stop_music() -> void:
-	"""Stops music playback"""
+	"""Stops all music and SFX playback"""
 	music_player.stop()
+	sfx_player.stop()
 
 func set_volume_db(volume: float) -> void:
 	"""Sets music volume in decibels"""
