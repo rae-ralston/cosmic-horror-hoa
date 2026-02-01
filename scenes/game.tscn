@@ -12,6 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://j28d6tuyrgp6" path="res://scenes/timer_display.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://mdsr1aaoki0k" path="res://scenes/player.tscn" id="6_player"]
 [ext_resource type="PackedScene" uid="uid://dwnxilxpjb8yq" path="res://scenes/start_letter_ui.tscn" id="7_trtic"]
+[ext_resource type="PackedScene" uid="uid://dnrn256j1jnpv" path="res://scenes/placement_zone.tscn" id="9_vtaks"]
+[ext_resource type="PackedScene" uid="uid://dnws8dw5c3xsc" path="res://scenes/item.tscn" id="10_kvpfn"]
 [ext_resource type="PackedScene" uid="uid://settings_ui_001" path="res://scenes/settings_ui.tscn" id="8_settings"]
 [ext_resource type="PackedScene" uid="uid://b2eqcsxi2or4p" path="res://scenes/citations_overlay.tscn" id="11_kvuet"]
 
@@ -334,7 +336,7 @@ render_target_update_mode = 4
 [node name="World" type="Node2D" parent="GameView/GameViewport"]
 
 [node name="environment" parent="GameView/GameViewport/World" instance=ExtResource("2_yqjtg")]
-position = Vector2(41.775455, 64.799995)
+position = Vector2(79.094864, 266.6769)
 
 [node name="player" parent="GameView/GameViewport/World" instance=ExtResource("6_player")]
 position = Vector2(148.44211, 83.907684)
